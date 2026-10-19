@@ -1,0 +1,11 @@
+{
+  "name": "Quant Camp",
+  "short_name": "Quant Camp",
+  "description": "An interactive boot camp for the quantitative methods Quiz 1.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0d1017",
+  "theme_color": "#4a63e6",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

@@ -1,0 +1,11 @@
+node_modules
+dist
+*.local
+.DS_Store
+test-results
+playwright-report
+# The professor's original lecture files stay on this machine only.
+source_materials/*
+!source_materials/README.md
+curriculum/extracted/
+.venv/

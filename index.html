@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Quant Camp: an interactive boot camp for the quantitative methods Quiz 1." />
+    <meta name="theme-color" content="#0d1017" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="favicon.svg" />
+    <title>Quant Camp</title>
+    <script>
+      // Apply the saved theme before first paint (avoids a flash).
+      try { var s = JSON.parse(localStorage.getItem('quant-camp.v1') || '{}').state; if (s && s.theme) document.documentElement.dataset.theme = s.theme; else if (matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.dataset.theme = 'light'; } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Quant Camp needs JavaScript.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
