@@ -5,16 +5,30 @@ import { Cite, download } from '../components/Bits';
 import { Icon } from '../components/Icon';
 import { Empty, PageHeader } from '../components/Layout';
 import { Md } from '../components/Md';
-import { GLOSSARY, lessonById } from '../data';
+import { GLOSSARY, LESSONS, lessonById } from '../data';
+import { lessonsNotebook } from '../lib/lessonNotes';
 import { useProgress } from '../store/progress';
 
 export function Notes() {
-  const { bookmarks, notes, setNote, toggleBookmark } = useProgress();
+  const { bookmarks, notes, setNote, toggleBookmark, lessons: prog } = useProgress();
   const withNotes = Object.entries(notes).filter(([, t]) => t.trim());
   const exportMd = () => download('quant-camp-notes.md', `# Quant Camp notes\n\n${withNotes.map(([id, t]) => `## ${lessonById(id)?.title || id}\n\n${t}\n`).join('\n')}`, 'text/markdown');
   return (
     <div className="grid gap-6">
       <PageHeader eyebrow="Notes & bookmarks" title="Your notes" actions={withNotes.length > 0 && <button className="btn" onClick={exportMd}><Icon name="download" size={16} />Export notes (.md)</button>}>Saved in this browser only. Export them if you want a copy.</PageHeader>
+      <section className="card card-pad grid gap-3" style={{ background: 'var(--accent-soft)' }}>
+        <h2 className="font-bold">Put your notes in your Colab file</h2>
+        <ol className="grid gap-1 text-sm list-decimal pl-5">
+          <li>On any lesson, press <b>Copy for Colab</b>. In your Colab file, add a text cell (<b>+ Text</b>) and paste. You get the takeaway, the formulas (Colab shows the math), where to look in the slides and reference sheet, and your notes.</li>
+          <li>For the lesson's Python, use the copy button on each code block and paste it into a code cell (<b>+ Code</b>).</li>
+          <li>Or download everything at once below, open it in Colab (File &gt; Upload notebook), and copy the cells you want into your file (Edit &gt; Copy cell, then paste).</li>
+        </ol>
+        <p className="text-sm">Tip for the open-note exam: give each lesson a heading, and add a contents cell at the top of your file listing the topics, so you can jump to the right place fast.</p>
+        <div className="flex flex-wrap gap-2">
+          <button className="btn btn-primary btn-sm" onClick={() => download('quant-camp-lesson-notes.ipynb', lessonsNotebook(LESSONS.filter((l) => prog[l.id] || notes[l.id]?.trim()), notes), 'application/x-ipynb+json')}><Icon name="download" size={16} />Download lessons I've studied</button>
+          <button className="btn btn-sm" onClick={() => download('quant-camp-all-lessons.ipynb', lessonsNotebook(LESSONS, notes), 'application/x-ipynb+json')}><Icon name="download" size={16} />Download all {LESSONS.length} lessons</button>
+        </div>
+      </section>
       <section className="grid gap-3">
         <h2 className="font-bold">Bookmarked lessons</h2>
         {bookmarks.length === 0 ? <p className="text-sm text-muted">Use the bookmark button on any lesson to keep it here.</p> : (

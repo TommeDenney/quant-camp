@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Bar, Cite, NotebookMark } from '../components/Bits';
+import { Bar, Cite, copyText, NotebookMark } from '../components/Bits';
 import { Blocks } from '../components/Blocks';
 import { Icon } from '../components/Icon';
 import { Empty } from '../components/Layout';
@@ -14,6 +14,7 @@ import type { Block, Lesson, Question } from '../content/types';
 import { LESSONS, lessonForObjective, moduleById, MODULES, objectiveById, QUESTIONS, questionById } from '../data';
 import { currentScore, emptyState, ladderFor } from '../lib/mastery';
 import { pick } from '../lib/select';
+import { lessonCode, lessonMarkdown } from '../lib/lessonNotes';
 import { isSprint, SKIM_STEPS, tierOf, TIER_HINT, TIER_LABEL } from '../lib/plan';
 import { hoursLeft, useProgress } from '../store/progress';
 
@@ -146,6 +147,11 @@ function LessonSession({ id }: { id: string }) {
           <Link to="/learn" className="text-muted hover:underline inline-flex items-center gap-1"><Icon name="back" size={14} />{mod ? `${mod.id}. ${mod.title}` : 'Lessons'}</Link>
           <span className="ml-auto flex gap-1 no-print">
             <button className="btn btn-sm btn-ghost" onClick={() => setNotesOpen((v) => !v)} aria-expanded={notesOpen}><Icon name="notes" size={15} />Notes</button>
+            <button className="btn btn-sm btn-ghost" title="Copy this lesson's takeaway, formulas, sources and your notes as a Colab text cell" onClick={async () => {
+              const ok = await copyText(lessonMarkdown(lesson, st.notes[lesson.id]));
+              const code = lessonCode(lesson).length;
+              toast(ok ? { tone: 'good', title: 'Copied for Colab', body: `In your Colab file: + Text, then paste.${code ? ` The lesson's Python is in the code blocks: use their copy buttons for code cells.` : ''}` } : { tone: 'info', title: 'Could not copy', body: 'Use Notes & bookmarks > Download for Colab instead.' });
+            }}><Icon name="copy" size={15} />Copy for Colab</button>
             <button className="btn btn-sm btn-ghost" aria-pressed={bookmarked} onClick={() => st.toggleBookmark(lesson.id)} style={{ color: bookmarked ? 'var(--warn)' : undefined }}><Icon name="bookmark" size={15} />{bookmarked ? 'Saved' : 'Bookmark'}</button>
           </span>
         </div>

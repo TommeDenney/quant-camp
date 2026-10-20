@@ -2,9 +2,9 @@ import type { ColabStep } from '../content/colab';
 import type { PyExample } from '../content/python';
 
 const lines = (s: string) => s.replace(/\n$/, '').split('\n').map((l, i, a) => i < a.length - 1 ? `${l}\n` : l);
-const mdCell = (s: string) => ({ cell_type: 'markdown', metadata: {}, source: lines(s) });
-const codeCell = (s: string) => ({ cell_type: 'code', metadata: {}, execution_count: null, outputs: [], source: lines(s) });
-const pack = (cells: object[]) => JSON.stringify({
+export const mdCell = (s: string) => ({ cell_type: 'markdown', metadata: {}, source: lines(s) });
+export const codeCell = (s: string) => ({ cell_type: 'code', metadata: {}, execution_count: null, outputs: [], source: lines(s) });
+export const pack = (cells: object[]) => JSON.stringify({
   cells: cells.map((cell, i) => ({ ...cell, id: `cell-${i}` })),
   metadata: { kernelspec: { display_name: 'Python 3', language: 'python', name: 'python3' }, language_info: { name: 'python' }, colab: { provenance: [] } },
   nbformat: 4, nbformat_minor: 5,
@@ -31,3 +31,4 @@ export function colabNotebook(steps: ColabStep[]) {
     ]),
   ]);
 }
+
