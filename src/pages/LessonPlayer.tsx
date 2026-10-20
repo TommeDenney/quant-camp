@@ -17,9 +17,9 @@ import { pick } from '../lib/select';
 import { hoursLeft, useProgress } from '../store/progress';
 
 const STEPS = [
-  { key: 'why', label: 'Why it matters' }, { key: 'prereq', label: 'Prerequisite' }, { key: 'plain', label: 'In plain English' },
-  { key: 'visual', label: 'See it' }, { key: 'worked', label: 'Worked example' }, { key: 'interact', label: 'Try it' },
-  { key: 'check', label: 'Quick check' }, { key: 'mistakes', label: 'Common mistakes' }, { key: 'takeaway', label: 'Key takeaway' }, { key: 'recall', label: 'Recall plan' },
+  { key: 'why', label: 'Why it matters', short: 'Why' }, { key: 'prereq', label: 'Prerequisite', short: 'Basics' }, { key: 'plain', label: 'In plain English', short: 'Plain' },
+  { key: 'visual', label: 'See it', short: 'See it' }, { key: 'worked', label: 'Worked example', short: 'Example' }, { key: 'interact', label: 'Try it', short: 'Try it' },
+  { key: 'check', label: 'Quick check', short: 'Check' }, { key: 'mistakes', label: 'Common mistakes', short: 'Mistakes' }, { key: 'takeaway', label: 'Key takeaway', short: 'Takeaway' }, { key: 'recall', label: 'Recall plan', short: 'Recall' },
 ] as const;
 type StepKey = (typeof STEPS)[number]['key'];
 
@@ -175,7 +175,7 @@ function LessonSession({ id }: { id: string }) {
           <button key={s.key} onClick={() => setPos(k)} aria-current={k === pos ? 'step' : undefined} title={s.label}
             className="flex-1 min-w-[38px] grid gap-1 text-left rounded-lg px-1.5 py-1 text-[11px] font-semibold" style={{ color: k === pos ? 'var(--accent)' : 'var(--muted)' }}>
             <span className="h-1.5 rounded-full" style={{ background: k < pos ? 'var(--accent)' : k === pos ? 'var(--accent)' : 'var(--surface-3)', opacity: k < pos ? 0.55 : 1 }} />
-            <span className="hidden lg:block truncate">{s.label}</span>
+            <span className="hidden md:block leading-tight whitespace-nowrap">{s.short}</span>
           </button>
         ))}
       </nav>
