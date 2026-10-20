@@ -17,12 +17,25 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '^22.22.2'
           cache: npm
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
       - run: npm ci
+      - run: python -m pip install numpy scipy pandas matplotlib statsmodels
       - run: npm run test
-      - run: npm run validate
+      - run: npm run validate:strict
+      - run: node scripts/verify.mjs
+      - run: npm run verify:examples
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-results
+          path: test-results/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

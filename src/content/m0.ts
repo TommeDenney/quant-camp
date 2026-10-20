@@ -13,10 +13,11 @@ export const lessons: Lesson[] = [
   {
     id: 'm0-l1', module: 0, title: 'Samples, populations and why we need statistics', minutes: 7,
     objectives: ['m0.what', 'm0.popsample', 'm0.rv'],
-    sources: [src('L01-02', 23), src('L01-02', 47), src('L05-06', 23)],
+    sources: [src('L01-02', 23), src('L01-02', 47), src('L05-06', 23), src('review', 2, 3)],
     why: [{ kind: 'text', md: md`July was hot in New York. Was it *unusually* hot, or is that within normal year-to-year variation? Answering that needs a way to say how much things vary and how sure we can be. That is what statistics is for: the professor defines it as "the study of **variability, uncertainties, and decision making** in the face of uncertainties".` }],
     prereq: [{ kind: 'text', md: md`Nothing yet: this is the starting point. You only need the idea that measurements (temperatures, rainfall, storm counts) **vary** from one time or place to the next.` }],
     plain: [
+      { kind: 'callout', tone: 'professor', md: md`**Quiz setup:** the review schedules data downloading and Colab setup from **1:10 to 1:15 pm**, followed by CourseWorks multiple-choice questions until **2:55 pm**. Submit your Python notebook before logging out. The quiz is open book, but online browsing and AI assistance are prohibited; the stated exception is Colab's code autocompletion. Prepare your notebook, data, and permitted notes in advance. This study app is for preparation.` },
       { kind: 'text', md: md`**Population**: every possible observation of something (all summers that could ever happen under today's climate). **Sample**: the observations we actually have (the 45 summers on record).
 
 In climate science we **never** have the population, so most of the course is about using a sample to say something about the population (or the process) that produced it.` },
@@ -94,7 +95,7 @@ export const questions: Question[] = [
     source: S('L01-02', 29), prereqs: [] },
   { id: 'm0-q05', type: 'numeric', module: 0, topic: 'Foundations', subtopic: 'Summation notation', objective: 'm0.symbols', difficulty: 1,
     prompt: md`For $x = (2, 5, 1, 4)$, compute $\sum_{n=1}^{4} x_n^2$.`,
-    answer: 46, tolerance: 0,
+    answer: 46, tolerance: 0, check: { py: 'np.sum(np.array([2, 5, 1, 4]) ** 2)' },
     explanation: md`Square each value first, then add: $4 + 25 + 1 + 16 = 46$. (Not $(\sum x_n)^2 = 12^2 = 144$.)`,
     distractors: {}, source: S('L01-02', 29), prereqs: [], misconceptions: ['sum-of-squares-vs-square-of-sum'] },
   { id: 'm0-q06', type: 'match', module: 0, topic: 'Foundations', subtopic: 'Notation', objective: 'm0.symbols', difficulty: 2,
@@ -105,7 +106,7 @@ export const questions: Question[] = [
     source: S('review', 8), prereqs: [] },
   { id: 'm0-q07', type: 'numeric', module: 0, topic: 'Foundations', subtopic: 'Degrees of freedom', objective: 'm0.symbols', difficulty: 2,
     prompt: md`A pooled two-sample t-test compares $N_x = 30$ and $N_y = 25$ observations. How many degrees of freedom does the t-distribution have?`,
-    answer: 53, tolerance: 0,
+    answer: 53, tolerance: 0, check: { py: 'np.sum([30, 25]) - 2' },
     explanation: md`For the pooled (Student's) t-test, $df = N_x + N_y - 2 = 30 + 25 - 2 = 53$ (one degree of freedom is used up by each sample mean).`,
     source: S('L03-04', 23), prereqs: [] },
   { id: 'm0-q08', type: 'mc', module: 0, topic: 'Foundations', subtopic: 'i.i.d.', objective: 'm0.rv', difficulty: 2,
@@ -131,7 +132,7 @@ export const questions: Question[] = [
     source: S('L01-02', 31), prereqs: [] },
   { id: 'm0-q12', type: 'numeric', module: 0, topic: 'Foundations', subtopic: 'Sample variance', objective: 'm0.symbols', difficulty: 2,
     prompt: md`Daily highs (°C): 30, 32, 31, 35, 32. Compute the sample variance $\hat\sigma^2$ using the course formula (divide by $N-1$).`,
-    answer: 3.5, tolerance: 0.01,
+    answer: 3.5, tolerance: 0.01, check: { py: 'np.var([30, 32, 31, 35, 32], ddof=1)' },
     explanation: md`$\hat\mu = 32$; squared deviations $4, 0, 1, 9, 0$ sum to 14; $14/(5-1) = 3.5$ °C².`,
     distractors: {}, source: S('L01-02', 29), prereqs: [], misconceptions: ['divide-by-N'] },
 ];

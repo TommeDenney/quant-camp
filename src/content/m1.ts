@@ -39,7 +39,7 @@ The **standard deviation** is the square root of the variance, which brings us b
   },
   {
     id: 'm1-l2', module: 1, title: 'Shape: skewness and kurtosis', minutes: 11,
-    objectives: ['m1.skew', 'm1.kurt', 'm1.invariance'], sources: [src('L01-02', 29, 30), src('L01-02', 45)],
+    objectives: ['m1.skew', 'm1.kurt', 'm1.invariance'], sources: [src('L01-02', 29, 30), src('L01-02', 42, 45)],
     why: [{ kind: 'text', md: md`Rainfall is zero or small most days, but now and then a storm drops a huge amount. The mean and standard deviation can't describe that **long right tail**, and the tail is where floods live. Skewness and kurtosis describe shape. The course also shows that projected changes in summer temperature involve changes in skewness and kurtosis, not just the mean (slide 45).` }],
     prereq: [{ kind: 'text', md: md`Deviations from the mean, $x_n-\hat\mu$, and the standard deviation $\hat\sigma$ (previous lesson).` }],
     plain: [
@@ -52,6 +52,7 @@ To make the result unitless (so mm and inches give the same answer), divide by $
       { kind: 'callout', tone: 'warning', md: md`**Pearson vs excess kurtosis.** The slide's $\hat\kappa$ is **Pearson** kurtosis (normal = 3). **Excess** kurtosis is $\hat\kappa - 3$ (normal = 0). \`scipy.stats.kurtosis\` returns **excess** kurtosis by default (\`fisher=True\`); use \`fisher=False\` for Pearson. Always check which one you're reading.` },
       { kind: 'callout', tone: 'professor', md: md`The slide describes $\hat\kappa > 3$ as "heavier tailed (more flatted than Gaussian)" and $\hat\kappa < 3$ as "lighter tailed (more peaked than Gaussian)". **Clarification:** kurtosis is best read as tail weight. A heavy-tailed distribution often looks *more* sharply peaked in the middle, not flatter, so treat "heavier vs lighter tails" as the reliable part of that description.` },
       { kind: 'text', md: md`**Invariance** (slide 30): adding a constant (a *shift*, e.g. converting to anomalies) changes the mean but not the variance, skewness or kurtosis. Multiplying by a constant (a *scale*, e.g. mm → inches) changes the mean and variance, but not skewness or kurtosis, because they are standardized.` },
+      { kind: 'callout', tone: 'tip', md: md`The shape invariance statement assumes a **positive** scale factor. A negative factor reflects the data and reverses skewness; kurtosis is unchanged. Subtracting a **monthly climatology** from Niño 3.4 is not a single constant shift: different months lose different values. Variance, skewness, and kurtosis can therefore change as well as the mean. Compare summaries before and after deseasonalizing rather than applying constant-shift invariance to that operation.` },
       { kind: 'steps', title: 'Invariance table (Lecture 1–2, slide 30)', steps: [
         { md: md`**Mean:** shift-invariant **No**, scale-invariant **No**.` },
         { md: md`**Variance:** shift-invariant **Yes**, scale-invariant **No** (scales by $c^2$).` },
@@ -183,7 +184,7 @@ export const questions: Question[] = [
     source: S('L01-02', 30), prereqs: ['m1.center'] },
   { id: 'm1-q16', type: 'numeric', module: 1, topic: 'Describing data', subtopic: 'IQR', objective: 'm1.quantiles', difficulty: 2,
     prompt: md`\`np.percentile(x, 25)\` returns 3.25 and \`np.percentile(x, 75)\` returns 9.5 for a rainfall sample (mm). What is the interquartile range (mm)?`,
-    answer: 6.25, tolerance: 0.001,
+    answer: 6.25, tolerance: 0.001, check: { py: 'np.subtract(9.5, 3.25)' },
     explanation: md`IQR $= q_{75} - q_{25} = 9.5 - 3.25 = 6.25$ mm (\`scipy.stats.iqr(x)\`).`,
     source: S('L01-02', 31), prereqs: [] },
   { id: 'm1-q17', type: 'mc', module: 1, topic: 'Describing data', subtopic: 'Python output', objective: 'm1.kurt', difficulty: 3,

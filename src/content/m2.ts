@@ -95,7 +95,7 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'm2-l4', module: 2, title: 'Correlation: Pearson vs Spearman', minutes: 7,
-    objectives: ['m2.corr'], sources: [src('L01-02', 62, 63), src('L03-04', 9, 11)],
+    objectives: ['m2.corr'], sources: [src('L01-02', 62, 63), src('L03-04', 9, 14)],
     why: [{ kind: 'text', md: md`Does a warmer Niño 3.4 go with fewer Atlantic hurricanes? A **correlation coefficient** measures how strongly two variables change together, and in which direction.` }],
     prereq: [{ kind: 'text', md: md`Variance and standard deviation (Module 1). **Covariance** is the paired version of variance: the average product of the two variables' deviations from their means. **Ranks** replace each value with its position in the sorted list (1 = smallest).` }],
     plain: [
@@ -108,7 +108,7 @@ Example on slide 9: a perfectly monotonic but curved relationship has Spearman =
       { kind: 'text', md: md`From the course (slide 63): Spearman was noticeably stronger than Pearson (−0.306 vs −0.252), and more significant ($p = 0.008$ vs $p = 0.029$): "the monotonic relationship is stronger than the linear one, consistent with the physical mechanism". In SciPy: \`stats.pearsonr(x, y)\` and \`stats.spearmanr(x, y)\`.` },
       { kind: 'callout', tone: 'tip', md: md`Correlation describes association, not causation, and it needs **paired** data (each $x_n$ matched to its own $y_n$). Lecture 3 asks "Does this test make sense??" about correlating Niño 3.4 between two unrelated 30-year periods (slide 38). The months of 1951–1980 aren't paired with those of 1996–2025, so the correlation has no physical meaning.` },
     ],
-    visual: [{ kind: 'viz', id: 'regression', preset: 'monotonic', caption: 'A curved but monotonic cloud: Spearman stays near 1 while Pearson drops.' }],
+    visual: [{ kind: 'text', md: md`A **pattern correlation** pairs values at matching spatial locations, such as modeled and observed temperature trends on the same grid. It measures similarity of the spatial pattern, not whether the overall amplitudes or means agree. State whether the observations are paired across time or across space; these answer different questions (Lecture 3–4, slides 12–14).` }, { kind: 'viz', id: 'regression', preset: 'monotonic', caption: 'A curved but monotonic cloud: Spearman stays near 1 while Pearson drops.' }],
     worked: [{ kind: 'steps', title: 'x = 1, 2, 3, 4 and y = x³ = 1, 8, 27, 64', steps: [
       { md: md`Ranks of $x$: 1, 2, 3, 4. Ranks of $y$: 1, 2, 3, 4, identical, so **Spearman = 1** exactly.` },
       { md: md`The points curve upward rather than lying on a line, so **Pearson ≈ 0.95**, high but less than 1.` },

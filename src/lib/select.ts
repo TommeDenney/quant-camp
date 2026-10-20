@@ -53,3 +53,13 @@ export function seededOrder(n: number, seed: string) {
   if (n > 1 && idx.every((v, i) => v === i)) idx.push(idx.shift()!); // never start already solved
   return idx;
 }
+
+/** Display indexes map back to stored indexes, so scoring and feedback stay intact. */
+export function choiceOrder(q: Question) {
+  const choices = q.type === 'tf' && !q.choices?.length ? ['True', 'False'] : q.choices || [];
+  const indexes = choices.map((_, i) => i);
+  if (q.type !== 'mc' && q.type !== 'multi') return indexes;
+  const pinned = indexes.filter((i) => /\b(?:all|none) of (?:the )?(?:above|these)\b/i.test(choices[i]));
+  const movable = indexes.filter((i) => !pinned.includes(i));
+  return [...seededOrder(movable.length, q.id + ':choices').map((i) => movable[i]), ...pinned];
+}

@@ -10,7 +10,7 @@ import { celebrate } from '../components/Reward';
 import type { Question } from '../content/types';
 import { lessonForObjective, objectiveById, QUESTIONS, questionById } from '../data';
 import { mockSummary, readiness, scoreAnswer, type Response } from '../lib/score';
-import { isExamQuestion, mockSet } from '../lib/select';
+import { choiceOrder, isExamQuestion, mockSet } from '../lib/select';
 import { useProgress, type MockResult } from '../store/progress';
 
 const KINDS = [
@@ -32,6 +32,7 @@ function Run({ qs, minutes, onSubmit }: { qs: Question[]; minutes: number; onSub
   useEffect(() => { if (left <= 0) submit(); }, [left <= 0]);
   const q = qs[i];
   const choices = q.type === 'tf' ? (q.choices?.length ? q.choices : ['True', 'False']) : q.choices || [];
+  const displayOrder = choiceOrder(q);
   const r = resp[q.id];
   const set = (v: Response) => setResp({ ...resp, [q.id]: v });
   const answered = qs.filter((x) => resp[x.id] != null && !(Array.isArray(resp[x.id]) && !(resp[x.id] as number[]).length)).length;
@@ -40,7 +41,7 @@ function Run({ qs, minutes, onSubmit }: { qs: Question[]; minutes: number; onSub
     const h = (e: KeyboardEvent) => {
       if (/INPUT|TEXTAREA|SELECT/.test((e.target as HTMLElement).tagName)) return;
       const n = parseInt(e.key, 10);
-      if (n >= 1 && n <= choices.length) { if (q.type === 'multi') { const a = Array.isArray(r) ? r : []; set(a.includes(n - 1) ? a.filter((x) => x !== n - 1) : [...a, n - 1]); } else set(n - 1); }
+      if (n >= 1 && n <= choices.length) { const stored = displayOrder[n - 1]; if (q.type === 'multi') { const a = Array.isArray(r) ? r : []; set(a.includes(stored) ? a.filter((x) => x !== stored) : [...a, stored]); } else set(stored); }
       if (e.key === 'ArrowRight') setI((k) => Math.min(qs.length - 1, k + 1));
       if (e.key === 'ArrowLeft') setI((k) => Math.max(0, k - 1));
     };
@@ -52,19 +53,19 @@ function Run({ qs, minutes, onSubmit }: { qs: Question[]; minutes: number; onSub
       <div className="grid gap-4">
         <div className="flex items-center gap-3">
           <b>Question {i + 1} of {qs.length}</b>
-          <span className={`chip ml-auto tabular-nums font-bold ${left < 5 * 60_000 ? 'chip-bad' : ''}`} role="timer"><Icon name="mock" size={14} />{mm}:{String(ss).padStart(2, '0')}</span>
+          <span className={`chip ml-auto tabular-nums font-bold ${left < 5 * 60_000 ? 'chip-bad' : ''}`} role="timer" aria-label="Mock exam time remaining"><Icon name="mock" size={14} />{mm}:{String(ss).padStart(2, '0')}</span>
         </div>
         <AnimatePresence mode="wait">
-          <motion.div key={q.id} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }} transition={{ duration: 0.15 }} className="card card-pad grid gap-4">
+          <motion.div key={q.id} data-qid={q.id} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }} transition={{ duration: 0.15 }} className="card card-pad grid gap-4">
             <div className="text-xs text-muted">{q.type === 'multi' ? 'Select all that apply.' : 'Choose one answer.'}</div>
             <Md className="text-[1.05rem]">{q.prompt}</Md>
             <div className="grid gap-2">
-              {choices.map((c, k) => {
+              {displayOrder.map((k, position) => {
                 const sel = Array.isArray(r) ? r.includes(k) : r === k;
                 return (
                   <button key={k} className={`choice${sel ? ' selected' : ''}`} role={q.type === 'multi' ? 'checkbox' : 'radio'} aria-checked={sel}
                     onClick={() => (q.type === 'multi' ? set(Array.isArray(r) ? (r.includes(k) ? r.filter((x) => x !== k) : [...r, k]) : [k]) : set(k))}>
-                    <span className="key">{q.type === 'multi' ? (sel ? '✓' : '') : String.fromCharCode(65 + k)}</span><MdInline>{c}</MdInline>
+                    <span className="key">{q.type === 'multi' ? (sel ? '✓' : '') : String.fromCharCode(65 + position)}</span><MdInline>{choices[k]}</MdInline>
                   </button>
                 );
               })}
@@ -98,7 +99,7 @@ function Results({ m, onClose }: { m: MockResult & { responses: Record<string, R
   const mocks = useProgress((s) => s.mocks);
   const qs = m.qids.map(questionById).filter((q): q is Question => !!q);
   const pct = (100 * m.score) / Math.max(1, m.total);
-  const ready = readiness(mocks.map((x) => (100 * x.score) / Math.max(1, x.total)));
+  const ready = readiness(mocks.map((x) => (100 * x.score) / Math.max(1, x.total)), mocks.map((x) => x.qids));
   const topics = Object.entries(m.byTopic).sort((a, b) => a[1][0] / a[1][1] - b[1][0] / b[1][1]);
   const weak = topics.filter(([, [c, t]]) => c / t < 0.8).map(([k]) => k);
   const missed = qs.filter((q) => m.missed.includes(q.id));
@@ -168,7 +169,7 @@ export default function Mock() {
   const submit = (responses: Record<string, Response>) => {
     if (!run) return;
     const rows = run.qs.map((q) => ({ q, correct: scoreAnswer(q, responses[q.id]), response: responses[q.id] }));
-    for (const { q, correct } of rows) if (responses[q.id] != null) st.record({ qid: q.id, objective: q.objective, correct, firstTry: true, hinted: false, delayed: true, difficulty: q.difficulty });
+    for (const { q, correct } of rows) st.record({ qid: q.id, objective: q.objective, correct, firstTry: true, hinted: false, delayed: true, difficulty: q.difficulty });
     const s = mockSummary(rows);
     const m: MockResult = { at: Date.now(), kind: run.kind.id, score: s.correct, total: s.total, byTopic: s.byTopic, missed: s.missed, qids: run.qs.map((q) => q.id) };
     st.addMock(m);
@@ -183,7 +184,7 @@ export default function Mock() {
   if (result) return <><PageHeader eyebrow="Mock exam · results" title="How it went" /><Results m={result} onClose={() => setResult(null)} /></>;
   if (run) return <Run qs={run.qs} minutes={run.kind.minutes * (run.qs.length / run.kind.n)} onSubmit={submit} />;
   if (!pool.length) return <><PageHeader eyebrow="Mock exam" title="Mock exams" /><Empty title="No exam questions yet">The question bank is being prepared.</Empty></>;
-  const ready = readiness(st.mocks.map((x) => (100 * x.score) / Math.max(1, x.total)));
+  const ready = readiness(st.mocks.map((x) => (100 * x.score) / Math.max(1, x.total)), st.mocks.map((x) => x.qids));
   return (
     <div className="grid gap-6">
       <PageHeader eyebrow="Mock exam" title="Mock exams">Timed and multiple choice only, like Quiz 1. No hints or feedback until you submit. Each new mock avoids the questions used in your last two.</PageHeader>

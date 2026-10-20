@@ -1,6 +1,36 @@
 // Mock exam, reference search, offline use and every route without console errors.
 import { expect, test } from '@playwright/test';
-import { go, shot, skipSetup, watchErrors } from './helpers';
+import { go, shot, skipSetup, STORE_KEY, watchErrors } from './helpers';
+
+test('changing quiz parameters starts a fresh session without reloading', async ({ page }) => {
+  await skipSetup(page);
+  await go(page, '/quiz?obj=m0.what&n=1');
+  await expect(page.locator('[data-qid]')).toHaveAttribute('data-qid', /^m0/);
+  await page.locator('button.choice').first().click();
+  await page.getByRole('button', { name: 'Check answer', exact: true }).click();
+  await expect(page.locator('.feedback-good, .feedback-bad')).toBeVisible();
+  await page.evaluate(() => { location.hash = '/quiz?module=1&n=3'; });
+  await expect(page.locator('[data-qid]')).toHaveAttribute('data-qid', /^m1/);
+  await expect(page.getByText('1 / 3', { exact: true })).toBeVisible();
+  await expect(page.locator('.feedback-good, .feedback-bad')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Check answer', exact: true })).toBeDisabled();
+});
+
+test('unanswered mock questions are saved for missed-question review', async ({ page }) => {
+  page.on('dialog', (d) => d.accept());
+  await skipSetup(page);
+  await go(page, '/mock');
+  await page.locator('button.card:not([disabled])').last().click();
+  await expect(page.getByRole('timer', { name: 'Mock exam time remaining' })).toBeVisible();
+  await page.getByRole('button', { name: 'Submit now', exact: true }).click();
+  await expect(page.getByText('Accuracy by topic')).toBeVisible();
+  const state = await page.evaluate((key) => JSON.parse(localStorage.getItem(key) || '{}').state, STORE_KEY);
+  expect(state.mocks[0].score).toBe(0);
+  expect(state.attempts.length).toBe(state.mocks[0].total);
+  expect(state.attempts.every((a: { correct: boolean }) => !a.correct)).toBe(true);
+  await go(page, '/quiz?mode=missed');
+  await expect(page.locator('[data-qid]')).toBeVisible();
+});
 
 test('a mock exam can be taken and scored', async ({ page }) => {
   const w = watchErrors(page);
@@ -10,13 +40,18 @@ test('a mock exam can be taken and scored', async ({ page }) => {
   const start = page.locator('button.card:not([disabled])').first();
   await expect(start).toBeVisible();
   await start.click();
-  await expect(page.getByRole('timer')).toBeVisible();
+  await expect(page.getByRole('timer', { name: 'Mock exam time remaining' })).toBeVisible();
   // Answer every question with its first option, then submit.
   for (let i = 0; i < 80; i++) {
+    const currentId = await page.locator('[data-qid]').getAttribute('data-qid');
     const opt = page.locator('button.choice:not([disabled])').first();
     if (await opt.count()) await opt.click();
     const next = page.getByRole('button', { name: /^Next/ });
-    if (await next.count() && await next.isVisible()) { await next.click(); continue; }
+    if (await next.count() && await next.isVisible()) {
+      await next.click();
+      await expect(page.locator('[data-qid]')).not.toHaveAttribute('data-qid', currentId!);
+      continue;
+    }
     break;
   }
   await shot(page, 'mock-last-question');

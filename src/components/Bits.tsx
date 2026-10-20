@@ -72,7 +72,10 @@ export function CodeBlock({ code, explain, title, output }: { code: string; expl
       </div>
       <pre className="code" aria-label={title || 'Code'}>
         {lines.map((l, i) => (
-          <span key={i} className={`code-line${hl === i ? ' hl' : ''}`} onClick={() => perLine && setHl(hl === i ? null : i)}><span className="ln">{i + 1}</span>{l || ' '}{'\n'}</span>
+          <span key={i} className={`code-line${hl === i ? ' hl' : ''}`}
+            role={perLine ? 'button' : undefined} tabIndex={perLine ? 0 : undefined} aria-pressed={perLine ? hl === i : undefined}
+            onClick={() => perLine && setHl(hl === i ? null : i)}
+            onKeyDown={(e) => { if (perLine && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); setHl(hl === i ? null : i); } }}><span className="ln">{i + 1}</span>{l || ' '}{'\n'}</span>
         ))}
       </pre>
       {perLine && hl != null && explain![hl] && <div className="text-sm callout callout-tip"><b>Line {hl + 1}:</b> {explain![hl]}</div>}

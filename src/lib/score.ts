@@ -76,10 +76,14 @@ export function mockSummary(rows: ResultRow[]): MockSummary {
 }
 
 /** Readiness from repeated mock results: needs two distinct cumulative assessments ≥ 80%. */
-export function readiness(percents: number[]) {
+export function readiness(percents: number[], questionSets?: string[][]) {
   const passes = percents.filter((p) => p >= 80).length;
   const recent = percents.slice(-3);
   const avg = recent.length ? recent.reduce((a, b) => a + b, 0) / recent.length : 0;
-  const level = passes >= 2 && avg >= 80 ? 'ready' : avg >= 70 ? 'close' : percents.length ? 'not yet' : 'no data';
+  const consecutivePasses = percents.length >= 2 && percents.slice(-2).every((p) => p >= 80);
+  const latestSets = questionSets?.slice(-2);
+  const distinct = !questionSets || (latestSets?.length === 2 && latestSets.every((s) => s.length > 0)
+    && JSON.stringify([...latestSets[0]].sort()) !== JSON.stringify([...latestSets[1]].sort()));
+  const level = consecutivePasses && distinct ? 'ready' : avg >= 70 ? 'close' : percents.length ? 'not yet' : 'no data';
   return { passes, recentAverage: Math.round(avg), level };
 }

@@ -22,6 +22,14 @@ describe('nextTasks', () => {
     expect(t[0]).toMatchObject({ kind: 'lesson', lesson: 'l1' });
     expect(t.some((x) => x.kind === 'mock')).toBe(false);
   });
+  it('skips lessons with untaught external prerequisites', () => {
+    const t = nextTasks(input({ modules: [{ ...modules[0], lessons: ['l2', 'l1'] }] }));
+    expect(t.find((x) => x.kind === 'lesson')).toMatchObject({ lesson: 'l1' });
+  });
+  it('allows a lesson to teach its own internal prerequisite chain', () => {
+    const t = nextTasks(input({ lessons: [lesson('l1', 0, ['a', 'b'])] }));
+    expect(t.find((x) => x.kind === 'lesson')).toMatchObject({ lesson: 'l1' });
+  });
   it('puts due reviews first, missed ones before ordinary ones', () => {
     const states = {
       a: { ...emptyState(), score: 70, dueAt: NOW - 1 },

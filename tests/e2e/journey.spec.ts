@@ -81,3 +81,12 @@ test('the dashboard Continue button takes you somewhere useful', async ({ page }
   await cont.click();
   await expect(page).toHaveURL(/#\/(learn\/|practice|quiz|mock)/);
 });
+
+test('opening another lesson resets the current step', async ({ page }) => {
+  await skipSetup(page);
+  await go(page, '/learn/m0-l1');
+  await page.getByRole('button', { name: /^Next/ }).last().click();
+  await expect(page.getByText(/Step 2 of 10/)).toBeVisible();
+  await page.evaluate(() => { location.hash = '/learn/m0-l2'; });
+  await expect(page.getByText(/Step 1 of 10/)).toBeVisible();
+});

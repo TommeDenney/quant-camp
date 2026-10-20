@@ -50,7 +50,7 @@ export function nextTasks(p: PlanInput, n = 5): Task[] {
   // 2. The next lesson in study order whose prerequisites are in place.
   const order = p.modules.flatMap((m) => m.lessons);
   const next = order.map((id) => p.lessons.find((l) => l.id === id)!).filter(Boolean).find((l) => !p.lessonsDone[l.id]?.done
-    && l.objectives.every((oid) => { const o = p.objectives.find((x) => x.id === oid); return !o || prereqsMet(o, p.states, taught, p.now) || true; }));
+    && l.objectives.every((oid) => { const o = p.objectives.find((x) => x.id === oid); return !o || prereqsMet(o, p.states, new Set([...taught, ...l.objectives]), p.now); }));
   if (next) tasks.push({ kind: 'lesson', lesson: next.id, reason: hoursLeft < 14 ? 'Next lesson (keep it brisk: the exam is close).' : 'Next lesson in your plan.' });
   // 3. Practise the weakest taught objectives.
   const weak = p.objectives.filter((o) => taught.has(o.id))

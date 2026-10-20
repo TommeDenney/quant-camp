@@ -1,51 +1,61 @@
 # Build status
 
-_Maintained by the QA agent. Last updated: 2026-10-19 (evening)._
+Updated 2026-10-19 by Codex after continuing the Claude handoff.
 
-## Current milestone
-Phase 2 – functional foundation (app shell + first content), with the QA harness in place.
+## Implemented
 
-## Completed
-- Statistics library `src/lib/stats.ts` (moments, quantiles, normal/t/F/gamma/χ², tests, resampling, ACF, AR(1), OLS, trends, periodogram, aliasing) with SciPy-verified unit tests
-- Mastery / spaced-review engine `src/lib/mastery.ts` and planner `src/lib/plan.ts`
-- Scoring helpers `src/lib/score.ts` (every question type, mock summary, readiness)
-- Content validator `scripts/validate-content.mjs` (`npm run validate`, `npm run validate:strict`)
-- Question verifier `scripts/verify-questions.py` (recomputes `check.py` expressions with NumPy/SciPy)
-- Playwright config (production build, system Chrome, laptop 1470×956 + mobile 390×844)
+- All 14 modules: 35 guided lessons, 48 objectives, 253 questions; module 13 has 32 integrated questions.
+- 85 sourced glossary entries and 13 printable reference sections.
+- All 93 source-map topics point to teaching lessons. Added explicit explanations for periodic AR, AR(2), ARX, spectral band-pass interpretation and regression uncertainty.
+- Preserved and explained the F-test correction (F=1.2593, two-sided p about 0.029), corrected AR forecast variance denominator, and other documented slide errata.
+- Google Colab walkthrough, six executable tutorial cells, practice CSV, starter notebook and 13 standalone Python examples with displayed outputs and interpretation.
+- Generated notebooks in public/notebooks/; build regenerates them from the app's content.
+- Default warm cream light mode, with pale sage, mist blue, soft lavender and night options. Choice persists in browser storage.
+- Shuffled MC/select-all options in practice and mocks with original-index scoring; fixed quiz and lesson state on route changes, prerequisite gating, unanswered mock remediation, and readiness requiring consecutive passes on distinct sets.
+- Keyboard fixes for question actions and line-by-line code explanations; laptop/mobile Colab and theme browser regressions added.
+- CI configured to run strict validation, question and example computations, production build and browser tests before Pages deployment.
 
-## Curriculum coverage (from the validator)
-| | count |
-|---|---|
-| modules with lessons | 3 / 14 (0–2) |
-| lessons | 9 |
-| objectives | 16 |
-| questions | 46 (31 exam-eligible MC/TF) |
-| glossary terms | 0 |
-| source-map topics covered | 15 / 93 (modules 0–2 fully covered except review-checklist pointers) |
+## Verification in this session
 
-## Tests
-| suite | result |
-|---|---|
-| unit (Vitest) | 60 / 60 passing (stats, mastery, planner, scoring, slide-formula moments, all 15 visualizations render + respond + reset in jsdom) |
-| content validation | passing (13 coverage warnings: modules 1–13 have no lessons yet) |
-| verify-questions | 10 / 10 computational checks pass; 4 numeric without `check` (m0-q05, m0-q07, m0-q12, m1-q16) hand-verified correct (46, 53, 3.5, 6.25) |
-| build | ✗ blocked: `src/App.tsx` is still the Vite template and imports deleted `src/assets/*` (builder is replacing it) |
-| e2e (Playwright) | not yet run (waiting for app routes) |
+The repository's npm dependencies could not be installed: terminal network access is disabled,
+and the offline npm cache is incomplete. This means the standard build, full unit suite,
+KaTeX rendering validation and Playwright suite have **not passed in this checkout**.
+The machine's Node 22.20 is also below the minimum required by some locked test dependencies;
+the package now documents its compatible Node versions.
 
-## Known bugs
-- **HIGH – answers leak through position.** `src/components/QuestionCard.tsx:36` shuffles only `order`/`match` items; `mc` and `multi` choices render in stored order, and the correct answer is choice index 1 in 23/29 multiple-choice questions (validator warning). Fix: display mc/multi choices in `seededOrder(choices.length, q.id)` order (keep `tf` as True/False, and keep "All/None of the above"-style options last), mapping the clicked display index back to the stored index before `scoreAnswer`. Alternatively the content can vary answer positions, but shuffling in the UI also stops mock exams rewarding memorised positions.
-- Review-checklist entries in `curriculum/source-map-draft.json` (file `review`, e.g. pages 4, 9–11) count as uncovered because lessons cite lecture slides, not the review pages. Add the matching `src('review', n)` reference to each lesson's `sources` so coverage is traceable to the checklist.
-- `src/lib/plan.ts:61` – the prerequisite condition for choosing the next lesson ends in `|| true`, so prerequisites never hold a lesson back. Lessons are still offered in study order, so this is harmless today, but the "never introduce an unexplained prerequisite" rule is not enforced by the planner.
+Available local tools were used without changing the repository's dependency versions:
 
-## Fixed by QA
-- `src/data.ts:15` – content exports were only collected when named `LESSONS*`/`QUESTIONS*`/…; `src/content/m0.ts` exports `lessons`/`questions`/`objectives`, so the app loaded no content. Prefix match is now case-insensitive; the validator now errors on exports the app can't see.
-- `vite.config.ts:1` – `test` config key failed type-checking (`tsc -b`); added `/// <reference types="vitest/config" />`.
+- 56 pure unit tests passed with an existing Vitest 2.1.9 installation (statistics, mastery, planner, scoring, selection and notebook export). Visualization/jsdom tests were not run.
+- Strict structural content validation passed with real Rolldown: 253 questions, 35 lessons, 48 objectives, 85 glossary entries, 93/93 mapped source topics, zero errors or warnings. **KaTeX checks were explicitly skipped** because KaTeX is unavailable.
+- NumPy/SciPy computations: 70 checks passed; all 69 numeric questions have check.py; none remain unverified.
+- All 13 Python example cells and six executable Colab tutorial cells passed their displayed-output checks. The Colab file-upload API was simulated with the actual downloadable CSV; its live UI was not tested.
+- An installed TypeScript 5.9.3 checked the content and pure-library subset without errors. The locked TypeScript 7 production build remains untested.
+- An installed esbuild parsed/bundled the application with package dependencies externalized. This checks source syntax, not runtime behavior or production compatibility.
+- Theme contrast checks passed for body text, muted text, buttons and feedback text/background pairs in all four pale palettes and night mode (all checked ratios at least 4.5:1).
+- Generated notebook structure and cell IDs passed unit checks; git diff --check passed.
 
-## Unfinished
-- App routes, pages and the 15 visualizations (builder)
-- Modules 1–13 content, glossary, Python Lab examples, reference (lead)
-- `curriculum/source-map.json`
-- E2E suite run
+Fallback tool configuration, cached Python packages and reports are under ignored
+node_modules/.cache/. They are session evidence, not application dependencies.
 
-## Next task
-Write the Playwright suite against the builder's routes once they land; keep the loop running.
+## Remaining release checks
+
+On a network-enabled environment with a compatible Node release:
+
+```bash
+npm ci
+python -m pip install numpy scipy pandas matplotlib statsmodels
+npm test
+npm run verify
+npm run verify:examples
+npm run validate:strict
+npm run build
+npm run e2e
+```
+
+Local browser tests use installed Chrome; PW_CHROME can point to another compatible
+Chrome executable. CI installs Chromium and uses it automatically.
+
+Review browser rendering, notebook downloads, quiz/mocks and the offline journey after
+the full build. No Pages deployment or live-site verification has been performed from
+this restricted session. The existing GitHub repository is cloned locally; these changes
+are local until committed and pushed.

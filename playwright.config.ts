@@ -2,7 +2,11 @@ import { defineConfig, devices } from '@playwright/test';
 
 // End-to-end tests run against the PRODUCTION build (run `npm run build` first),
 // served by `vite preview` at the GitHub Pages base path, in the installed Google Chrome.
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const CHROME = process.platform === 'win32'
+  ? `${process.env.PROGRAMFILES || 'C:/Program Files'}/Google/Chrome/Application/chrome.exe`
+  : process.platform === 'darwin'
+    ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    : '/usr/bin/google-chrome';
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -15,7 +19,7 @@ export default defineConfig({
   reporter: [['list'], ['json', { outputFile: 'test-results/results.json' }]],
   use: {
     baseURL: 'http://localhost:4173/quant-camp/',
-    launchOptions: { executablePath: process.env.PW_CHROME || CHROME },
+    launchOptions: process.env.CI && !process.env.PW_CHROME ? {} : { executablePath: process.env.PW_CHROME || CHROME },
     viewport: { width: 1470, height: 956 }, // 15" MacBook Air (Divine's laptop)
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',

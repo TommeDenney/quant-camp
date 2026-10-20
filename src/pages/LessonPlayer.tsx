@@ -58,6 +58,10 @@ function CheckStep({ qs, onAllDone }: { qs: Question[]; onAllDone: (score: numbe
 
 export default function LessonPlayer() {
   const { id = '' } = useParams();
+  return <LessonSession key={id} id={id} />;
+}
+
+function LessonSession({ id }: { id: string }) {
   const nav = useNavigate();
   const lesson = LESSONS.find((l) => l.id === id);
   const st = useProgress();

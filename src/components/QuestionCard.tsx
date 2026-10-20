@@ -9,7 +9,7 @@ import type { Question } from '../content/types';
 import { lessonForObjective, objectiveById } from '../data';
 import { levelOf } from '../lib/mastery';
 import { scoreAnswer, type Response } from '../lib/score';
-import { seededOrder } from '../lib/select';
+import { choiceOrder, seededOrder } from '../lib/select';
 import { useProgress } from '../store/progress';
 import Viz from '../viz';
 import { Icon } from './Icon';
@@ -33,6 +33,7 @@ export function QuestionCard({ q, delayed = false, onNext, onAnother, onOutcome,
   const record = useProgress((s) => s.record);
   const addStars = useProgress((s) => s.addStars);
   const choices = q.type === 'tf' ? (q.choices?.length ? q.choices : ['True', 'False']) : q.choices || [];
+  const displayOrder = choiceOrder(q);
   const orderStart = useMemo(() => (q.type === 'order' ? seededOrder(choices.length, q.id) : []), [q.id]);
   const pairs = useMemo(() => (q.type === 'match' ? choices.map((c) => { const [l, r] = c.split('|'); return { l: (l || '').trim(), r: (r || '').trim() }; }) : []), [q.id]);
   const rightOrder = useMemo(() => (q.type === 'match' ? seededOrder(pairs.length, q.id + ':r') : []), [q.id]);
@@ -73,12 +74,17 @@ export function QuestionCard({ q, delayed = false, onNext, onAnother, onOutcome,
   const retry = () => { setResp(initial()); setSubmitted(false); };
 
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
-    if ((e.target as HTMLElement).tagName === 'INPUT' && e.key !== 'Enter') return;
+    const target = e.target as HTMLElement;
+    if (/SELECT|TEXTAREA/.test(target.tagName)) return;
+    if (target.tagName === 'INPUT' && e.key !== 'Enter') return;
+    // Let focused action buttons keep their native Enter behavior (Hint, retry,
+    // answer reveal, reordering). Choice buttons can still use Enter to check.
+    if (e.key === 'Enter' && target.closest('button') && !target.closest('button.choice')) return;
     if (e.key === 'Enter' && !submitted && ready) { e.preventDefault(); submit(); return; }
     if (e.key === 'Enter' && submitted && onNext) { e.preventDefault(); onNext(); return; }
     const n = parseInt(e.key, 10);
-    if (!submitted && n >= 1 && n <= choices.length && (q.type === 'mc' || q.type === 'tf')) setResp(n - 1);
-    if (!submitted && n >= 1 && n <= choices.length && q.type === 'multi') toggle(n - 1);
+    if (!submitted && n >= 1 && n <= choices.length && (q.type === 'mc' || q.type === 'tf')) setResp(displayOrder[n - 1]);
+    if (!submitted && n >= 1 && n <= choices.length && q.type === 'multi') toggle(displayOrder[n - 1]);
   };
   const toggle = (i: number) => setResp((r) => { const a = Array.isArray(r) ? r : []; return a.includes(i) ? a.filter((x) => x !== i) : [...a, i]; });
   const move = (i: number, d: number) => setResp((r) => { const a = [...(r as number[])]; const j = i + d; if (j < 0 || j >= a.length) return a; [a[i], a[j]] = [a[j], a[i]]; return a; });
@@ -111,10 +117,10 @@ export function QuestionCard({ q, delayed = false, onNext, onAnother, onOutcome,
 
       {(q.type === 'mc' || q.type === 'tf' || q.type === 'multi') && (
         <div className="grid gap-2" role={q.type === 'multi' ? 'group' : 'radiogroup'}>
-          {choices.map((c, i) => (
+          {displayOrder.map((i, position) => (
             <button key={i} className={`choice${choiceClass(i)}`} disabled={submitted} role={q.type === 'multi' ? 'checkbox' : 'radio'}
               aria-checked={Array.isArray(resp) ? resp.includes(i) : resp === i} onClick={() => (q.type === 'multi' ? toggle(i) : setResp(i))}>
-              <span className="key">{q.type === 'multi' ? (Array.isArray(resp) && resp.includes(i) ? '✓' : '') : i + 1}</span><MdInline>{c}</MdInline>
+              <span className="key">{q.type === 'multi' ? (Array.isArray(resp) && resp.includes(i) ? '✓' : '') : position + 1}</span><MdInline>{choices[i]}</MdInline>
             </button>
           ))}
         </div>

@@ -7,23 +7,10 @@ import { Empty, PageHeader } from '../components/Layout';
 import { Md } from '../components/Md';
 import { PY_EXAMPLES, type PyExample } from '../content/python';
 import { MODULES } from '../data';
+import { ColabGuide } from '../components/ColabGuide';
+import { notebook } from '../lib/notebook';
 
-const lines = (s: string) => s.replace(/\n$/, '').split('\n').map((l, i, a) => (i < a.length - 1 ? `${l}\n` : l));
-const mdCell = (s: string) => ({ cell_type: 'markdown', metadata: {}, source: lines(s) });
-const codeCell = (s: string) => ({ cell_type: 'code', metadata: {}, execution_count: null, outputs: [], source: lines(s) });
-
-export function notebook(exs: PyExample[]) {
-  const cells = exs.flatMap((e) => [
-    mdCell(`## ${e.title}\n\n**Task.** ${e.task}\n\n**Inputs.** ${e.inputs}\n\n**Assumptions.** ${e.assumptions}`),
-    codeCell(e.code),
-    mdCell(`**Expected output**\n\n\`\`\`\n${e.output}\n\`\`\`\n\n**Interpretation.** ${e.interpret}\n\n**Common mistakes**\n${e.mistakes.map((m) => `- ${m}`).join('\n')}`),
-  ]);
-  return JSON.stringify({
-    cells: [mdCell('# Quant Camp: Python examples\nNumPy / SciPy examples from the Quiz 1 boot camp. Run each cell in order.'), ...cells],
-    metadata: { kernelspec: { display_name: 'Python 3', language: 'python', name: 'python3' }, language_info: { name: 'python' } },
-    nbformat: 4, nbformat_minor: 5,
-  }, null, 1);
-}
+export { notebook } from '../lib/notebook';
 
 function Example({ e }: { e: PyExample }) {
   return (
@@ -51,8 +38,9 @@ export default function PythonLab() {
   return (
     <div className="grid gap-6">
       <PageHeader eyebrow="Python Lab" title="NumPy & SciPy, step by step" actions={PY_EXAMPLES.length > 0 && <button className="btn" onClick={() => download('quant-camp-examples.ipynb', notebook(PY_EXAMPLES), 'application/x-ipynb+json')}><Icon name="download" size={16} />Download all as a notebook</button>}>
-        Read the code line by line (click a line), copy it, or download a Jupyter notebook. The app doesn't run Python; the expected output is shown so you can check your own run.
+        Copy an example into your Google Colab notebook, or download it as an .ipynb and upload it in Colab. Compare your output and explain what it means.
       </PageHeader>
+      <ColabGuide />
       {PY_EXAMPLES.length === 0 ? <Empty title="No examples yet">The Python examples are being prepared.</Empty> : (
         <>
           {mods.length > 1 && (

@@ -2,6 +2,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { applyAttempt, emptyState, type Attempt, type ObjectiveState } from '../lib/mastery';
+import type { Theme } from '../lib/themes';
 
 export interface Setup {
   done: boolean;
@@ -34,7 +35,7 @@ interface State {
   studyMs: number;
   mocks: MockResult[];
   stars: number;
-  theme: 'dark' | 'light';
+  theme: Theme;
   reducedMotion: boolean;
   // actions
   saveSetup: (s: Partial<Setup>) => void;
@@ -45,7 +46,7 @@ interface State {
   addStudyTime: (ms: number) => void;
   addMock: (m: MockResult) => void;
   addStars: (n: number) => void;
-  setTheme: (t: 'dark' | 'light') => void;
+  setTheme: (t: Theme) => void;
   setReducedMotion: (v: boolean) => void;
   reset: () => void;
 }
@@ -55,7 +56,7 @@ export const DEFAULT_EXAM = '2026-10-21T13:10';
 const initial = {
   setup: { done: false, hoursMon: 4, hoursTue: 5, minutesWed: 60, confStats: 2, confPython: 3, examAt: DEFAULT_EXAM },
   objectives: {}, attempts: [], seen: {}, lessons: {}, lastLesson: null, bookmarks: [], notes: {}, studyMs: 0, mocks: [], stars: 0,
-  theme: (typeof matchMedia !== 'undefined' && matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') as 'dark' | 'light',
+  theme: 'light' as Theme,
   reducedMotion: typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches,
 };
 

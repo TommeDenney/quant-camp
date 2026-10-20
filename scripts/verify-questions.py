@@ -11,10 +11,11 @@ evaluated with `np`, `st` (scipy.stats), `scipy`, `math`, `sm` (statsmodels.api)
     the correct choice (within the same tolerance), and must NOT match any other choice
   * multi questions: a list of booleans (one per choice) must equal the answer set
 
-Numeric questions without a check are listed as "unverified" (not a failure).
+Numeric questions without a check are listed as "unverified" and fail verification.
 
 Usage: python3 scripts/verify-questions.py   (needs numpy, scipy, statsmodels)
 """
+import argparse
 import json
 import math
 import re
@@ -23,21 +24,31 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / 'node_modules' / '.cache' / 'qc-questions.json'
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--input', type=Path, help='Verify an already exported questions JSON file')
+args = parser.parse_args()
+OUT = args.input or ROOT / 'node_modules' / '.cache' / 'qc-questions.json'
 
 try:
     import numpy as np
     import scipy
     import scipy.stats as st
-    import statsmodels.api as sm
-    from statsmodels.tsa.stattools import acf
 except ImportError as e:  # pragma: no cover
     print(f'verify-questions: missing Python package ({e}). Install numpy scipy statsmodels.')
     sys.exit(2)
 
-OUT.parent.mkdir(parents=True, exist_ok=True)
-subprocess.run(['node', str(ROOT / 'scripts' / 'export-questions.mjs'), str(OUT)], check=True, cwd=ROOT, stdout=subprocess.DEVNULL)
-data = json.loads(OUT.read_text())
+# Statsmodels is needed only by checks that use sm or acf. Missing it must not
+# prevent the remaining NumPy/SciPy checks from being evaluated.
+try:
+    import statsmodels.api as sm
+    from statsmodels.tsa.stattools import acf
+except ImportError:
+    sm = acf = None
+
+if args.input is None:
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(['node', str(ROOT / 'scripts' / 'export-questions.mjs'), str(OUT)], check=True, cwd=ROOT, stdout=subprocess.DEVNULL)
+data = json.loads(OUT.read_text(encoding='utf-8'))
 questions = data['questions']
 
 NUM = re.compile(r'[-−]?\d+(?:[.,]\d+)?(?:[eE][-+]?\d+)?')
@@ -113,4 +124,4 @@ if unverified:
     print('  unverified numeric:', ', '.join(unverified[:40]) + (' …' if len(unverified) > 40 else ''))
 for f in failures:
     print('  ✗', f)
-sys.exit(1 if failures else 0)
+sys.exit(1 if failures or unverified else 0)

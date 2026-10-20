@@ -50,7 +50,7 @@ export default function Dashboard() {
   const acc = accuracy(st.attempts);
   const due = dueObjectives(st.objectives, now);
   const weak = weakest(st.objectives, 5, now);
-  const ready = readiness(st.mocks.map((m) => (100 * m.score) / Math.max(1, m.total)));
+  const ready = readiness(st.mocks.map((m) => (100 * m.score) / Math.max(1, m.total)), st.mocks.map((m) => m.qids));
   const plan = bootCampSchedule(MODULES, LESSONS, { mon: st.setup.hoursMon, tue: st.setup.hoursTue, wedMin: st.setup.minutesWed });
   const resume = st.lastLesson && !st.lessons[st.lastLesson]?.done ? LESSONS.find((l) => l.id === st.lastLesson) : undefined;
   const primary = resume ? { to: `/learn/${resume.id}`, label: resume.title, verb: 'Resume' } : tasks[0] ? taskLink(tasks[0]) : LESSONS[0] ? { to: `/learn/${LESSONS[0].id}`, label: LESSONS[0].title, verb: 'Start' } : null;

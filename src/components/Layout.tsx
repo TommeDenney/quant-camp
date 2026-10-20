@@ -7,6 +7,7 @@ import { hoursLeft, useProgress } from '../store/progress';
 import { Icon, type IconName } from './Icon';
 import { SearchBox } from './Search';
 import { FocusTimer } from './Timer';
+import { THEMES, type Theme } from '../lib/themes';
 
 const NAV: { to: string; label: string; icon: IconName; mobile?: boolean }[] = [
   { to: '/', label: 'Mission Control', icon: 'home', mobile: true },
@@ -37,7 +38,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <span className="w-9 h-9 rounded-xl grid place-items-center font-black text-lg" style={{ background: 'var(--accent)', color: 'var(--accent-ink)' }}>Σ</span>
           <div><div className="font-extrabold leading-tight">Quant Camp</div><div className="text-xs text-muted">Quiz 1 boot camp</div></div>
         </div>
-        <nav className="grid gap-0.5">
+        <nav className="grid gap-0.5" aria-label="Main navigation">
           {NAV.map((n) => <NavLink key={n.to} to={n.to} end={n.to === '/'} className="nav-link"><Icon name={n.icon} />{n.label}</NavLink>)}
         </nav>
         <div className="mt-auto grid gap-3 pt-6">
@@ -51,9 +52,13 @@ export function Layout({ children }: { children: ReactNode }) {
           <div className="ml-auto flex items-center gap-2">
             <FocusTimer />
             <span className="chip chip-warn font-bold tabular-nums" title="Stars earned" aria-label={`${stars} stars`}><Icon name="star" size={14} />{stars}</span>
-            <button className="btn btn-sm btn-ghost" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`} title="Theme">
-              <Icon name={theme === 'dark' ? 'sun' : 'moon'} />
-            </button>
+            <label className="theme-picker">
+              <span className="sr-only">Study theme</span>
+              <span aria-hidden="true" className="theme-swatch" style={{ background: THEMES.find((t) => t.id === theme)?.color }} />
+              <select aria-label="Study theme" value={theme} onChange={(e) => setTheme(e.target.value as Theme)}>
+                {THEMES.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
+              </select>
+            </label>
           </div>
         </header>
         <AnimatePresence mode="wait" initial={false}>

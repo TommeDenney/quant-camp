@@ -3,16 +3,19 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": { "node": "^22.22.2 || ^24.15.0 || >=26.0.0" },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run notebooks && tsc -b && vite build",
     "preview": "vite preview --port 4173",
     "test": "vitest run",
     "validate": "node scripts/validate-content.mjs",
     "e2e": "playwright test",
     "extract": "python3 scripts/extract_sources.py",
     "validate:strict": "node scripts/validate-content.mjs --strict",
-    "verify": "npm run validate && python3 scripts/verify-questions.py"
+    "verify": "npm run validate && node scripts/verify.mjs",
+    "verify:examples": "node scripts/verify.mjs --examples",
+    "notebooks": "node scripts/export-notebooks.mjs"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",

@@ -1,7 +1,20 @@
 # Quant Camp: handoff for the next agent
 
 Exam boot-camp web app for Divine (stats + time series exam, **Wed 2026-10-21 13:10**).
-Studies on a MacBook Air M2 15" with a paper notebook. Deploy target: https://tommedenney.github.io/quant-camp/ (GitHub repo `TommeDenney/quant-camp`, not created yet).
+Studies on a MacBook Air M2 15" with a paper notebook. Deploy target: https://tommedenney.github.io/quant-camp/ (GitHub repo `TommeDenney/quant-camp`, cloned locally).
+
+## Codex continuation status (2026-10-19)
+
+The original implementation checklist below is historical. Modules m5-m13, content gathering,
+reference, glossary and Colab material are now implemented locally. See `BUILD_STATUS.md`
+for current evidence and release blockers before repeating work.
+
+- Current content: 253 questions, 35 lessons, 48 objectives, 85 glossary terms, 13 reference sections, all 93 source topics mapped.
+- User preferences: default soft light mode; warm cream, pale sage, mist blue and lavender options. Divine already uses Google Colab. Keep the guided Colab examples, starter notebook and CSV downloads accessible from Python Lab.
+- Available checks passed: 56 pure unit tests with cached Vitest, 70 NumPy/SciPy checks with no unverified numeric questions, 19 Python/Colab example cells, strict structural source coverage, content/library TypeScript subset, app syntax, and text contrast checks.
+- Full npm installation, locked-version production build, full unit suite, KaTeX validation, browser tests and deployment remain unverified. Terminal network access is disabled, offline npm cache is incomplete, and Node 22.20 is below some locked dependencies' minimum. Do not report the fallback checks as a full release pass.
+- Remaining work: use a compatible Node version and network-enabled environment for npm ci and the release commands in BUILD_STATUS.md, fix any failures, then commit/push and verify Pages. CI is configured for these checks before deployment.
+- No `src/content/index.ts` is needed: `src/data.ts` automatically gathers the module exports. Notebook artifacts regenerate with `npm run notebooks` and during build.
 
 ## Stack
 Vite 8, React 19, TypeScript, Tailwind v4, KaTeX, zustand (persist key `quant-camp.v1`), framer-motion, canvas-confetti, Vitest, Playwright (system Chrome). HashRouter, base `/quant-camp/`.

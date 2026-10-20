@@ -35,7 +35,13 @@ function build(params: URLSearchParams, seen: Record<string, number>, st: Return
     const missed = recentlyMissed(st.attempts).map(questionById).filter((q): q is Question => !!q);
     // Prefer a fresh question on the same objective; fall back to the same question.
     const used = new Set<string>();
-    const qs = missed.map((q) => { const [alt] = pick(QUESTIONS.filter((x) => x.objective === q.objective && x.id !== q.id && !used.has(x.id)), 1, seen); const r = alt || q; used.add(r.id); return r; });
+    const qs = missed.flatMap((q) => {
+      const [alt] = pick(QUESTIONS.filter((x) => x.objective === q.objective && x.id !== q.id && !used.has(x.id)), 1, seen);
+      const r = alt || q;
+      if (used.has(r.id)) return [];
+      used.add(r.id);
+      return [r];
+    });
     return { title: 'Recently missed', qs: qs.slice(0, Math.max(n, 10)) };
   }
   return { title: 'Mixed practice', qs: pick(QUESTIONS, n, seen) };
@@ -43,6 +49,10 @@ function build(params: URLSearchParams, seen: Record<string, number>, st: Return
 
 export default function Quiz() {
   const [params] = useSearchParams();
+  return <QuizSession key={params.toString()} params={params} />;
+}
+
+function QuizSession({ params }: { params: URLSearchParams }) {
   const st = useProgress();
   const { title, qs: initial } = useMemo(() => build(params, useProgress.getState().seen, useProgress.getState()), [params.toString()]);
   const [queue, setQueue] = useState<Question[]>(initial);

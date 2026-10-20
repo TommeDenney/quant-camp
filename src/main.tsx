@@ -9,7 +9,7 @@ const apply = () => {
   const { theme, reducedMotion } = useProgress.getState();
   document.documentElement.dataset.theme = theme;
   document.documentElement.dataset.motion = reducedMotion ? 'reduced' : 'full';
-  document.documentElement.style.colorScheme = theme;
+  document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
 };
 apply();
 useProgress.subscribe(apply);

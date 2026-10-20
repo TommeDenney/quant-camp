@@ -67,4 +67,10 @@ describe('mockSummary and readiness', () => {
     expect(readiness([82, 86]).level).toBe('ready');
     expect(readiness([50, 60]).level).toBe('not yet');
   });
+  it('requires consecutive passes on different question sets', () => {
+    expect(readiness([85, 85, 75]).level).toBe('close');
+    expect(readiness([85, 85], [['a', 'b'], ['b', 'a']]).level).toBe('close');
+    expect(readiness([85, 85], [['a', 'b'], ['a', 'c']]).level).toBe('ready');
+    expect(readiness([85, 85], [[], []]).level).toBe('close');
+  });
 });

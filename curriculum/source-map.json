@@ -1,0 +1,1277 @@
+{
+  "description": "Reviewed mapping of course coverage to teaching lessons. Original source pages are retained; module numbers follow the app teaching location. Explicit lesson IDs describe coverage rather than relying on nearby slide citations. Course-data examples are taught as methods; source datasets and assigned-homework solutions are not included.",
+  "topics": [
+    {
+      "topic": "What statistics is; descriptive vs inferential",
+      "module": 0,
+      "file": "L01-02",
+      "pages": [
+        23
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m0-l1"
+      ]
+    },
+    {
+      "topic": "Population vs sample",
+      "module": 0,
+      "file": "L01-02",
+      "pages": [
+        47
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m0-l1"
+      ]
+    },
+    {
+      "topic": "Sample distributions and QQ-plots",
+      "module": 2,
+      "file": "L01-02",
+      "pages": [
+        48
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m2-l1"
+      ]
+    },
+    {
+      "topic": "Quiz logistics and AI policy",
+      "module": 0,
+      "file": "review",
+      "pages": [
+        2,
+        3
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m0-l1"
+      ]
+    },
+    {
+      "topic": "How to describe sample data (histogram)",
+      "module": 1,
+      "file": "L01-02",
+      "pages": [
+        27,
+        28
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m1-l3"
+      ]
+    },
+    {
+      "topic": "Moments: mean, variance, standard deviation",
+      "module": 1,
+      "file": "L01-02",
+      "pages": [
+        29
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m1-l1"
+      ]
+    },
+    {
+      "topic": "Skewness (third moment) and kurtosis (fourth moment)",
+      "module": 1,
+      "file": "L01-02",
+      "pages": [
+        29,
+        45
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m1-l2"
+      ]
+    },
+    {
+      "topic": "Shift and scale invariance of moments",
+      "module": 1,
+      "file": "L01-02",
+      "pages": [
+        30
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m1-l2"
+      ]
+    },
+    {
+      "topic": "Quantiles, median, interquantile range",
+      "module": 1,
+      "file": "L01-02",
+      "pages": [
+        31
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m1-l3"
+      ]
+    },
+    {
+      "topic": "Moments of Niño 3.4 with/without climatology",
+      "module": 1,
+      "file": "L01-02",
+      "pages": [
+        42,
+        43
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m1-l2"
+      ]
+    },
+    {
+      "topic": "Moments and quantiles review checklist",
+      "module": 1,
+      "file": "review",
+      "pages": [
+        4
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m1-l1",
+        "m1-l2",
+        "m1-l3"
+      ]
+    },
+    {
+      "topic": "Common distributions and what controls their shape",
+      "module": 2,
+      "file": "L01-02",
+      "pages": [
+        49,
+        51,
+        52,
+        54,
+        55
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m2-l1"
+      ]
+    },
+    {
+      "topic": "PDF, CDF, probability of exceedance, return period",
+      "module": 2,
+      "file": "L01-02",
+      "pages": [
+        56,
+        57
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m2-l2"
+      ]
+    },
+    {
+      "topic": "Marginal, joint, conditional probability",
+      "module": 2,
+      "file": "L01-02",
+      "pages": [
+        58,
+        59
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m2-l3"
+      ]
+    },
+    {
+      "topic": "Marginal, joint, conditional probability (repeat)",
+      "module": 2,
+      "file": "L03-04",
+      "pages": [
+        5,
+        6
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m2-l3"
+      ]
+    },
+    {
+      "topic": "Bayes' theorem",
+      "module": 2,
+      "file": "L01-02",
+      "pages": [
+        60,
+        61
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m2-l3"
+      ]
+    },
+    {
+      "topic": "Bayes' theorem (repeat)",
+      "module": 2,
+      "file": "L03-04",
+      "pages": [
+        7,
+        8
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m2-l3"
+      ]
+    },
+    {
+      "topic": "Distribution and probability review checklist",
+      "module": 2,
+      "file": "review",
+      "pages": [
+        4
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m2-l1",
+        "m2-l2",
+        "m2-l3"
+      ]
+    },
+    {
+      "topic": "Correlation: Pearson vs Spearman",
+      "module": 2,
+      "file": "L01-02",
+      "pages": [
+        62,
+        63
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m2-l4"
+      ]
+    },
+    {
+      "topic": "Correlation: Pearson vs Spearman (repeat), pattern correlation",
+      "module": 2,
+      "file": "L03-04",
+      "pages": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m2-l4"
+      ]
+    },
+    {
+      "topic": "Quantifying relationships between datasets",
+      "module": 2,
+      "file": "review",
+      "pages": [
+        4
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m2-l4"
+      ]
+    },
+    {
+      "topic": "Hypothesis-test concepts: H0/Ha, test statistic, sampling distribution, alpha, p-value",
+      "module": 3,
+      "file": "review",
+      "pages": [
+        5
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m3-l1"
+      ]
+    },
+    {
+      "topic": "Significance level alpha",
+      "module": 3,
+      "file": "L03-04",
+      "pages": [
+        15,
+        18
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m3-l1"
+      ]
+    },
+    {
+      "topic": "p-value interpretation",
+      "module": 3,
+      "file": "L03-04",
+      "pages": [
+        19
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m3-l2"
+      ]
+    },
+    {
+      "topic": "Parametric tests: purpose",
+      "module": 3,
+      "file": "L03-04",
+      "pages": [
+        16,
+        17
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m3-l1"
+      ]
+    },
+    {
+      "topic": "t vs z distribution; standard error; degrees of freedom",
+      "module": 3,
+      "file": "L03-04",
+      "pages": [
+        23,
+        26
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m3-l3"
+      ]
+    },
+    {
+      "topic": "Test statistic definition; CLT and normality assumptions",
+      "module": 3,
+      "file": "L03-04",
+      "pages": [
+        34
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m3-l3"
+      ]
+    },
+    {
+      "topic": "Type I and Type II errors, power",
+      "module": 3,
+      "file": "L03-04",
+      "pages": [
+        69,
+        70
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m3-l4"
+      ]
+    },
+    {
+      "topic": "Type I and Type II errors (review)",
+      "module": 3,
+      "file": "review",
+      "pages": [
+        8
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m3-l4"
+      ]
+    },
+    {
+      "topic": "Multiple testing and false discovery rate",
+      "module": 3,
+      "file": "L03-04",
+      "pages": [
+        71,
+        72,
+        73,
+        74
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m3-l4"
+      ]
+    },
+    {
+      "topic": "Two-sample t-test: Student pooled vs Welch",
+      "module": 4,
+      "file": "L03-04",
+      "pages": [
+        22,
+        23,
+        24,
+        25
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m4-l1"
+      ]
+    },
+    {
+      "topic": "Classical F-test for variances",
+      "module": 4,
+      "file": "L03-04",
+      "pages": [
+        28,
+        29,
+        30,
+        33
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m4-l2"
+      ]
+    },
+    {
+      "topic": "F-test corrigendum (variance vs standard deviation)",
+      "module": 4,
+      "file": "L07-08",
+      "pages": [
+        5
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m4-l2"
+      ]
+    },
+    {
+      "topic": "Correlation test (t with N-2 df)",
+      "module": 4,
+      "file": "L03-04",
+      "pages": [
+        31,
+        32
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m4-l4"
+      ]
+    },
+    {
+      "topic": "Niño 3.4 example: Welch, F-test, correlation",
+      "module": 4,
+      "file": "L03-04",
+      "pages": [
+        35,
+        36,
+        37,
+        38
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m4-l2"
+      ]
+    },
+    {
+      "topic": "Wilcoxon rank-sum test",
+      "module": 4,
+      "file": "L03-04",
+      "pages": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m4-l3"
+      ]
+    },
+    {
+      "topic": "Kruskal–Wallis test",
+      "module": 4,
+      "file": "L03-04",
+      "pages": [
+        53,
+        54,
+        55,
+        57,
+        58
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m4-l3"
+      ]
+    },
+    {
+      "topic": "Kolmogorov–Smirnov test",
+      "module": 4,
+      "file": "L03-04",
+      "pages": [
+        59,
+        60,
+        61,
+        63,
+        64
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m4-l3"
+      ]
+    },
+    {
+      "topic": "Statistical test comparison table",
+      "module": 4,
+      "file": "review",
+      "pages": [
+        6
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m4-l4"
+      ]
+    },
+    {
+      "topic": "Statistical test comparison table (lecture)",
+      "module": 4,
+      "file": "L03-04",
+      "pages": [
+        68
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m4-l4"
+      ]
+    },
+    {
+      "topic": "Choosing which test to use",
+      "module": 4,
+      "file": "L05-06",
+      "pages": [
+        11
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m4-l4"
+      ]
+    },
+    {
+      "topic": "Permutation test",
+      "module": 5,
+      "file": "L03-04",
+      "pages": [
+        75
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m5-l1"
+      ]
+    },
+    {
+      "topic": "Bootstrapping",
+      "module": 5,
+      "file": "L03-04",
+      "pages": [
+        76,
+        77,
+        78
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m5-l2"
+      ]
+    },
+    {
+      "topic": "Permutation test and bootstrapping (review)",
+      "module": 5,
+      "file": "review",
+      "pages": [
+        7
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m5-l1",
+        "m5-l2"
+      ]
+    },
+    {
+      "topic": "Permutation and bootstrap recap",
+      "module": 5,
+      "file": "L05-06",
+      "pages": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m5-l1",
+        "m5-l2"
+      ]
+    },
+    {
+      "topic": "Time series data and temporal ordering",
+      "module": 6,
+      "file": "L05-06",
+      "pages": [
+        15
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m6-l1"
+      ]
+    },
+    {
+      "topic": "Stationarity",
+      "module": 6,
+      "file": "L05-06",
+      "pages": [
+        16
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m6-l1"
+      ]
+    },
+    {
+      "topic": "Time domain vs frequency domain",
+      "module": 6,
+      "file": "L05-06",
+      "pages": [
+        17
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m6-l1"
+      ]
+    },
+    {
+      "topic": "Stochastic process; deterministic part plus white noise",
+      "module": 6,
+      "file": "L05-06",
+      "pages": [
+        18,
+        19,
+        22
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m6-l1"
+      ]
+    },
+    {
+      "topic": "Serially correlated data (persistence, i.i.d. assumption)",
+      "module": 6,
+      "file": "L05-06",
+      "pages": [
+        23,
+        24,
+        29
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m6-l1"
+      ]
+    },
+    {
+      "topic": "Autocovariance and autocorrelation function",
+      "module": 6,
+      "file": "L05-06",
+      "pages": [
+        26,
+        27,
+        28
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m6-l1"
+      ]
+    },
+    {
+      "topic": "ACF significance: 95% CI ±1.96/√N",
+      "module": 6,
+      "file": "L05-06",
+      "pages": [
+        28,
+        32,
+        35,
+        38
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m6-l2"
+      ]
+    },
+    {
+      "topic": "Effective sample size and degrees of freedom",
+      "module": 6,
+      "file": "L05-06",
+      "pages": [
+        30,
+        32,
+        33,
+        34,
+        35
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m6-l2"
+      ]
+    },
+    {
+      "topic": "Inflation of confidence intervals / tests with N_eff",
+      "module": 6,
+      "file": "L05-06",
+      "pages": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m6-l2"
+      ]
+    },
+    {
+      "topic": "Time-series review checklist",
+      "module": 6,
+      "file": "review",
+      "pages": [
+        9
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m6-l1",
+        "m6-l2"
+      ]
+    },
+    {
+      "topic": "AR(1) model and p(x_t|x_0) ~ N(mean, var)",
+      "module": 7,
+      "file": "L05-06",
+      "pages": [
+        43,
+        44,
+        45
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m7-l1",
+        "m7-l2"
+      ]
+    },
+    {
+      "topic": "AR(1) for ENSO; AR(1) vs observed ACF",
+      "module": 7,
+      "file": "L05-06",
+      "pages": [
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m7-l1",
+        "m7-l2"
+      ]
+    },
+    {
+      "topic": "Periodic AR models and the spring predictability barrier",
+      "module": 7,
+      "file": "L05-06",
+      "pages": [
+        51,
+        52,
+        55
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m7-l2"
+      ]
+    },
+    {
+      "topic": "AR(2) model concept",
+      "module": 7,
+      "file": "L05-06",
+      "pages": [
+        53,
+        54
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m7-l2"
+      ]
+    },
+    {
+      "topic": "AR(1) for NYC Tmax: forecast and variance explained",
+      "module": 7,
+      "file": "L05-06",
+      "pages": [
+        56,
+        57
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m7-l2"
+      ]
+    },
+    {
+      "topic": "AR(1) coding example and forecast interval",
+      "module": 7,
+      "file": "L07-08",
+      "pages": [
+        7,
+        8,
+        9
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m7-l2"
+      ]
+    },
+    {
+      "topic": "ARX: AR with exogenous predictors",
+      "module": 7,
+      "file": "L05-06",
+      "pages": [
+        58
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m7-l2"
+      ]
+    },
+    {
+      "topic": "Low-, high- and band-pass filtering",
+      "module": 8,
+      "file": "L07-08",
+      "pages": [
+        10,
+        11,
+        12,
+        13
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m8-l1"
+      ]
+    },
+    {
+      "topic": "Filtering (introduced)",
+      "module": 8,
+      "file": "L05-06",
+      "pages": [
+        62,
+        63,
+        64,
+        65
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m8-l1"
+      ]
+    },
+    {
+      "topic": "Linear trend (warming rate) and its CI",
+      "module": 8,
+      "file": "L07-08",
+      "pages": [
+        15,
+        16,
+        18,
+        19,
+        20
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m8-l2"
+      ]
+    },
+    {
+      "topic": "Trend CI with autocorrelated residuals (N_eff)",
+      "module": 8,
+      "file": "L07-08",
+      "pages": [
+        17
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m8-l2"
+      ]
+    },
+    {
+      "topic": "Seasonal cycle, climatology and anomalies",
+      "module": 8,
+      "file": "L07-08",
+      "pages": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m8-l1"
+      ]
+    },
+    {
+      "topic": "Running mean as a low-pass filter",
+      "module": 8,
+      "file": "L07-08",
+      "pages": [
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m8-l1"
+      ]
+    },
+    {
+      "topic": "Filtering and trend review checklist",
+      "module": 8,
+      "file": "review",
+      "pages": [
+        10
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m8-l1",
+        "m8-l2"
+      ]
+    },
+    {
+      "topic": "Harmonic analysis: A, f, ω, φ, period, wavenumber",
+      "module": 9,
+      "file": "L07-08",
+      "pages": [
+        37,
+        38,
+        40
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m9-l1"
+      ]
+    },
+    {
+      "topic": "Nyquist wavenumber/frequency",
+      "module": 9,
+      "file": "L07-08",
+      "pages": [
+        41
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m9-l1"
+      ]
+    },
+    {
+      "topic": "Variance explained by harmonics (orthogonal)",
+      "module": 9,
+      "file": "L07-08",
+      "pages": [
+        44,
+        45,
+        47,
+        48,
+        49
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m9-l1",
+        "m9-l2"
+      ]
+    },
+    {
+      "topic": "Power spectrum / periodogram, Welch",
+      "module": 9,
+      "file": "L07-08",
+      "pages": [
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m9-l2"
+      ]
+    },
+    {
+      "topic": "Identifying dominant periods (Unknown X) and band-pass",
+      "module": 9,
+      "file": "L09-10",
+      "pages": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m9-l2"
+      ]
+    },
+    {
+      "topic": "Spectral review checklist",
+      "module": 9,
+      "file": "review",
+      "pages": [
+        10
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m9-l1",
+        "m9-l2"
+      ]
+    },
+    {
+      "topic": "Univariate linear regression: predictand, predictors",
+      "module": 10,
+      "file": "L09-10",
+      "pages": [
+        9
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m10-l1"
+      ]
+    },
+    {
+      "topic": "Quadratic and log-linear regression",
+      "module": 10,
+      "file": "L09-10",
+      "pages": [
+        10,
+        11
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m10-l1"
+      ]
+    },
+    {
+      "topic": "Least squares and SSE",
+      "module": 10,
+      "file": "L09-10",
+      "pages": [
+        12
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m10-l1"
+      ]
+    },
+    {
+      "topic": "R², multiple correlation, adjusted R²",
+      "module": 10,
+      "file": "L09-10",
+      "pages": [
+        13,
+        14
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m10-l2",
+        "m11-l1"
+      ]
+    },
+    {
+      "topic": "Coefficient CI, SE, degrees of freedom",
+      "module": 10,
+      "file": "L09-10",
+      "pages": [
+        15
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m10-l2"
+      ]
+    },
+    {
+      "topic": "Importance of the intercept",
+      "module": 10,
+      "file": "L09-10",
+      "pages": [
+        16
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m10-l1"
+      ]
+    },
+    {
+      "topic": "Wildfire burned area vs VPD and wind; statsmodels OLS",
+      "module": 10,
+      "file": "L09-10",
+      "pages": [
+        17,
+        18,
+        19,
+        20,
+        22,
+        23
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m10-l1",
+        "m10-l2"
+      ]
+    },
+    {
+      "topic": "Regression review checklist",
+      "module": 10,
+      "file": "review",
+      "pages": [
+        11
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m10-l1",
+        "m10-l2"
+      ]
+    },
+    {
+      "topic": "Model selection: forward selection and backward elimination",
+      "module": 11,
+      "file": "L09-10",
+      "pages": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m11-l1"
+      ]
+    },
+    {
+      "topic": "Model evaluation: training vs testing data",
+      "module": 11,
+      "file": "L09-10",
+      "pages": [
+        31
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m11-l2"
+      ]
+    },
+    {
+      "topic": "Cross-validation (LOOCV, K-fold) and overfitting",
+      "module": 11,
+      "file": "L09-10",
+      "pages": [
+        32,
+        33,
+        34,
+        35,
+        36
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m11-l2"
+      ]
+    },
+    {
+      "topic": "Coefficient interpretation with standardized predictors",
+      "module": 10,
+      "file": "L09-10",
+      "pages": [
+        37
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m10-l2"
+      ]
+    },
+    {
+      "topic": "Residual autocorrelation and generalized least squares",
+      "module": 10,
+      "file": "L09-10",
+      "pages": [
+        38
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m10-l2"
+      ]
+    },
+    {
+      "topic": "Forced vs unforced variability",
+      "module": 12,
+      "file": "L09-10",
+      "pages": [
+        41,
+        42
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m12-l1"
+      ]
+    },
+    {
+      "topic": "Scaling factors; detection and attribution criteria",
+      "module": 12,
+      "file": "L09-10",
+      "pages": [
+        43,
+        44
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m12-l1"
+      ]
+    },
+    {
+      "topic": "D&A worked example: CIs with N_eff, attributable change",
+      "module": 12,
+      "file": "L09-10",
+      "pages": [
+        45,
+        46,
+        47
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m12-l2"
+      ]
+    },
+    {
+      "topic": "Limitations of D&A framework",
+      "module": 12,
+      "file": "L09-10",
+      "pages": [
+        52
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m12-l2"
+      ]
+    },
+    {
+      "topic": "Detection and attribution review checklist",
+      "module": 12,
+      "file": "review",
+      "pages": [
+        11
+      ],
+      "taught": "slides",
+      "lessons": [
+        "m12-l1",
+        "m12-l2"
+      ]
+    }
+  ]
+}
