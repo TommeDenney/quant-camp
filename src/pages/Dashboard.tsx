@@ -7,10 +7,11 @@ import { Icon } from '../components/Icon';
 import { Empty, PageHeader } from '../components/Layout';
 import { LESSONS, MODULES, OBJECTIVES, QUESTIONS } from '../data';
 import { levelOf } from '../lib/mastery';
-import { bootCampSchedule, nextTasks } from '../lib/plan';
+import { bootCampSchedule, isSprint, nextTasks, sprintPlan, type SprintBlock } from '../lib/plan';
+import { COLAB_STEPS } from '../content/colab';
 import { readiness } from '../lib/score';
 import { accuracy, dueObjectives, masteryOf, moduleMastery, taskLink, weakest } from '../lib/summary';
-import { examTime, useProgress } from '../store/progress';
+import { examTime, hoursLeft, useProgress } from '../store/progress';
 
 function useNow(ms = 1000) {
   const [now, setNow] = useState(Date.now());
@@ -40,6 +41,40 @@ function CountdownCard({ at }: { at: number }) {
   );
 }
 
+const WHEN: Record<SprintBlock['when'], string> = { today: 'Today', tonight: 'Tonight, before bed', morning: 'Exam morning' };
+
+function SprintPlan({ blocks, left }: { blocks: SprintBlock[]; left: number }) {
+  const total = blocks.reduce((a, b) => a + b.minutes, 0);
+  const current = blocks.find((b) => b.total === 0 ? false : b.done < b.total);
+  return (
+    <section className="grid gap-3">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="font-bold">Your sprint plan</h2>
+        <span className="text-sm text-muted">{Math.round(left)} h to the exam · about {Math.round(total / 6) / 10} h of study, plus a full night's sleep</span>
+      </div>
+      <p className="text-sm text-muted">Your exam is open-note, so you don't need to memorise everything: you need to recognise which tool a problem needs and know where it is in your notes. The plan is trimmed for that: test out of the basics, learn the core topics fully, skim the rest, drill finding things, do the Python Lab, then one open-note mock tonight. Sleep helps more than an extra hour of cramming.</p>
+      <div className="grid gap-4 md:grid-cols-3">
+        {(['today', 'tonight', 'morning'] as const).map((w) => (
+          <div key={w} className="card card-pad grid gap-2 content-start">
+            <b>{WHEN[w]}</b>
+            <ol className="grid gap-1.5">
+              {blocks.filter((b) => b.when === w).map((b) => {
+                const finished = b.total > 0 && b.done >= b.total;
+                return (
+                  <li key={b.id}><Link to={b.to} className="grid gap-0.5 rounded-xl p-2 hover:bg-[var(--surface-2)]" style={b === current ? { outline: '2px solid var(--accent)' } : undefined}>
+                    <span className="flex items-baseline justify-between gap-2"><span className="font-semibold" style={finished ? { textDecoration: 'line-through', color: 'var(--muted)' } : undefined}>{b.title}</span><span className="text-xs text-muted whitespace-nowrap tabular-nums">{b.total ? `${b.done}/${b.total} · ` : ''}{b.minutes} min</span></span>
+                    <span className="text-xs text-muted">{b.detail}</span>
+                  </Link></li>
+                );
+              })}
+            </ol>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function Dashboard() {
   const st = useProgress();
   const now = Date.now();
@@ -56,6 +91,9 @@ export default function Dashboard() {
   const primary = resume ? { to: `/learn/${resume.id}`, label: resume.title, verb: 'Resume' } : tasks[0] ? taskLink(tasks[0]) : LESSONS[0] ? { to: `/learn/${LESSONS[0].id}`, label: LESSONS[0].title, verb: 'Start' } : null;
   const lessonsDone = LESSONS.filter((l) => st.lessons[l.id]?.done).length;
   const today = new Date().getDay(); // 1 Mon, 2 Tue, 3 Wed
+  const left = hoursLeft(st.setup, now);
+  const sprint = isSprint(left);
+  const blocks = sprint ? sprintPlan(MODULES, st.lessons, st.mocks.length, (st.pyDone || []).length, COLAB_STEPS.length) : [];
 
   const stats = [
     { label: 'Time studied', value: fmtDuration(st.studyMs), hint: 'from the focus timer' },
@@ -88,6 +126,8 @@ export default function Dashboard() {
         </motion.div>
         <CountdownCard at={at} />
       </div>
+
+      {sprint && <SprintPlan blocks={blocks} left={left} />}
 
       <div className="grid gap-3 grid-cols-2 md:grid-cols-5">
         {stats.map((s) => <div key={s.label} className="card card-pad grid gap-0.5"><span className="text-xs text-muted font-semibold">{s.label}</span><b className="text-xl capitalize tabular-nums">{s.value}</b><span className="text-[11px] text-muted">{s.hint}</span></div>)}
@@ -127,7 +167,7 @@ export default function Dashboard() {
         )}
       </section>
 
-      <section className="grid gap-3">
+      {sprint ? null : <section className="grid gap-3">
         <h2 className="font-bold">Your three-day plan</h2>
         <div className="grid gap-4 md:grid-cols-3">
           {(['mon', 'tue'] as const).map((d, k) => { const p = plan[d]; return (
@@ -143,7 +183,7 @@ export default function Dashboard() {
             <Link to="/reference" className="btn btn-sm mt-1">Open the reference sheet</Link>
           </div>
         </div>
-      </section>
+      </section>}
     </div>
   );
 }

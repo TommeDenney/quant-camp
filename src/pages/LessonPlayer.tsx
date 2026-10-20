@@ -14,6 +14,7 @@ import type { Block, Lesson, Question } from '../content/types';
 import { LESSONS, lessonForObjective, moduleById, MODULES, objectiveById, QUESTIONS, questionById } from '../data';
 import { currentScore, emptyState, ladderFor } from '../lib/mastery';
 import { pick } from '../lib/select';
+import { isSprint, SKIM_STEPS, tierOf, TIER_HINT, TIER_LABEL } from '../lib/plan';
 import { hoursLeft, useProgress } from '../store/progress';
 
 const STEPS = [
@@ -90,6 +91,8 @@ function LessonSession({ id }: { id: string }) {
   const bookmarked = st.bookmarks.includes(lesson.id);
   const mistakes = mistakesOf(lesson, qs);
   const ladder = ladderFor(hoursLeft(st.setup));
+  const tier = lesson && isSprint(hoursLeft(st.setup)) ? tierOf(lesson.module) : null;
+  const essential = (key: string) => tier === 'skim' && SKIM_STEPS.includes(key);
 
   const finish = () => {
     const first = !saved?.done;
@@ -149,8 +152,9 @@ function LessonSession({ id }: { id: string }) {
         <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">{lesson.title}</h1>
         <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
           <span>{lesson.minutes} min</span>
-          <Link to={`/quiz?obj=${lesson.objectives.map(encodeURIComponent).join(',')}&n=5&lesson=${lesson.id}`} className="btn btn-sm">I know this: test me</Link>
+          <Link to={`/quiz?obj=${lesson.objectives.map(encodeURIComponent).join(',')}&n=5&lesson=${lesson.id}`} className={tier === 'testout' ? 'btn btn-sm btn-primary' : 'btn btn-sm'}>I know this: test me</Link>
         </div>
+        {tier && tier !== 'final' && <div className="text-sm rounded-xl px-3 py-2 no-print" style={{ background: 'var(--accent-soft)' }}><span className="chip mr-2">{TIER_LABEL[tier]}</span>{TIER_HINT[tier]}</div>}
         <Cite sources={lesson.sources} />
       </header>
 
@@ -175,7 +179,7 @@ function LessonSession({ id }: { id: string }) {
           <button key={s.key} onClick={() => setPos(k)} aria-current={k === pos ? 'step' : undefined} title={s.label}
             className="flex-1 min-w-[38px] grid gap-1 text-left rounded-lg px-1.5 py-1 text-[11px] font-semibold" style={{ color: k === pos ? 'var(--accent)' : 'var(--muted)' }}>
             <span className="h-1.5 rounded-full" style={{ background: k < pos ? 'var(--accent)' : k === pos ? 'var(--accent)' : 'var(--surface-3)', opacity: k < pos ? 0.55 : 1 }} />
-            <span className="hidden md:block leading-tight whitespace-nowrap">{s.short}</span>
+            <span className="hidden md:block leading-tight whitespace-nowrap" style={essential(s.key) ? { color: 'var(--accent)', fontWeight: 800 } : tier === 'skim' && k !== pos ? { opacity: 0.6 } : undefined}>{s.short}{essential(s.key) ? ' *' : ''}</span>
           </button>
         ))}
       </nav>

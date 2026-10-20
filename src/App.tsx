@@ -15,6 +15,7 @@ import Practice from './pages/Practice';
 import PythonLab from './pages/PythonLab';
 import Quiz from './pages/Quiz';
 import Reference from './pages/Reference';
+import FindIt from './pages/FindIt';
 import { useProgress } from './store/progress';
 
 /** Scroll to the top on navigation, or to #id when the route has one (e.g. /glossary#Kurtosis). */
@@ -52,6 +53,7 @@ export default function App() {
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/mock" element={<Mock />} />
             <Route path="/reference" element={<Reference />} />
+            <Route path="/findit" element={<FindIt />} />
             <Route path="/python" element={<PythonLab />} />
             <Route path="/labs" element={<LabsIndex />} />
             <Route path="/labs/:id" element={<LabPage />} />

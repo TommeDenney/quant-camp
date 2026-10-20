@@ -42,7 +42,7 @@ export const questionById = (id: string) => QUESTIONS.find((q) => q.id === id);
 /** The first lesson that teaches an objective (for remediation links). */
 export const lessonForObjective = (oid: string) => LESSONS.find((l) => l.objectives.includes(oid));
 
-const FILE_NAMES: Record<SourceRef['file'], string> = {
+export const FILE_NAMES: Record<SourceRef['file'], string> = {
   review: 'Quiz 1 Review', 'L01-02': 'Lecture 1–2', 'L03-04': 'Lecture 3–4', 'L05-06': 'Lecture 5–6', 'L07-08': 'Lecture 7–8', 'L09-10': 'Lecture 9–10',
 };
 /** "Lecture 3–4, slides 22–25" */

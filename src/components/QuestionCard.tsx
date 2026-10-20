@@ -12,6 +12,7 @@ import { scoreAnswer, type Response } from '../lib/score';
 import { choiceOrder, seededOrder } from '../lib/select';
 import { useProgress } from '../store/progress';
 import Viz from '../viz';
+import { WhereToLook } from './WhereToLook';
 import { Icon } from './Icon';
 import { Md, MdInline } from './Md';
 import { celebrate, StarPop, toast } from './Reward';
@@ -187,6 +188,7 @@ export function QuestionCard({ q, delayed = false, onNext, onAnother, onOutcome,
             {distractor && <div className="text-sm"><b>Why that's tempting:</b> <MdInline>{distractor}</MdInline></div>}
             {multiWrong.map((d, i) => <div key={i} className="text-sm"><MdInline>{d}</MdInline></div>)}
             {(correct || reveal) && <div><div className="eyebrow mb-1">Explanation</div><Md>{q.explanation}</Md></div>}
+            {(correct || reveal) && <WhereToLook q={q} />}
             {!correct && (
               <div className="grid gap-2 text-sm">
                 {!!q.misconceptions?.length && <div><b>Common misconception:</b> {q.misconceptions.join(' ')}</div>}

@@ -95,7 +95,7 @@ test('works offline after the first visit', async ({ page, context }) => {
   await context.setOffline(false);
 });
 
-const ROUTES = ['/', '/learn', '/practice', '/quiz', '/mock', '/reference', '/python', '/labs', '/glossary', '/notes', '/setup'];
+const ROUTES = ['/', '/learn', '/practice', '/quiz', '/mock', '/reference', '/findit', '/python', '/labs', '/glossary', '/notes', '/setup'];
 for (const r of ROUTES) {
   test(`route ${r} renders without console errors`, async ({ page }) => {
     const w = watchErrors(page);

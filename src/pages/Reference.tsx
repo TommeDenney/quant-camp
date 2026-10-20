@@ -1,5 +1,6 @@
 // The open-note reference: formulas, the which-test table and key terms, laid out to print.
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Icon } from '../components/Icon';
 import { PageHeader } from '../components/Layout';
 import { MathBlock, Md, MdInline } from '../components/Md';
@@ -8,6 +9,9 @@ import { citeSource, GLOSSARY } from '../data';
 import { TESTS } from '../viz/testpicker';
 
 export default function Reference() {
+  const [params] = useSearchParams();
+  const target = params.get('s');
+  useEffect(() => { if (target) setTimeout(() => document.getElementById(target)?.scrollIntoView({ behavior: 'smooth' }), 150); }, [target]);
   return (
     <div className="grid gap-6 reference">
       <PageHeader eyebrow="Open-note reference" title="Quiz 1 reference sheet" actions={<button className="btn btn-primary" onClick={() => window.print()}><Icon name="print" size={16} />Print / save as PDF</button>}>

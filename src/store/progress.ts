@@ -31,6 +31,7 @@ interface State {
   lessons: Record<string, { at: number; step: number; done: boolean }>;
   lastLesson: string | null;
   bookmarks: string[];
+  pyDone: string[]; // Colab guide steps marked done
   notes: Record<string, string>;
   studyMs: number;
   mocks: MockResult[];
@@ -42,6 +43,7 @@ interface State {
   record: (a: Omit<Attempt, 'repeat' | 'at'> & { at?: number }) => { before: number; after: number; repeat: boolean };
   lessonStep: (id: string, step: number, done?: boolean) => void;
   toggleBookmark: (id: string) => void;
+  togglePy: (id: string) => void;
   setNote: (id: string, text: string) => void;
   addStudyTime: (ms: number) => void;
   addMock: (m: MockResult) => void;
@@ -55,7 +57,7 @@ interface State {
 export const DEFAULT_EXAM = '2026-10-21T13:10';
 const initial = {
   setup: { done: false, hoursMon: 4, hoursTue: 5, minutesWed: 60, confStats: 2, confPython: 3, examAt: DEFAULT_EXAM },
-  objectives: {}, attempts: [], seen: {}, lessons: {}, lastLesson: null, bookmarks: [], notes: {}, studyMs: 0, mocks: [], stars: 0,
+  objectives: {}, attempts: [], seen: {}, lessons: {}, lastLesson: null, bookmarks: [], pyDone: [], notes: {}, studyMs: 0, mocks: [], stars: 0,
   theme: 'light' as Theme,
   reducedMotion: typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches,
 };
@@ -83,6 +85,7 @@ export const useProgress = create<State>()(persist((set, get) => ({
     const cur = get().lessons[id];
     set({ lessons: { ...get().lessons, [id]: { at: Date.now(), step: Math.max(step, cur?.step || 0), done: !!(done || cur?.done) } }, lastLesson: id });
   },
+  togglePy: (id) => { const b = get().pyDone || []; set({ pyDone: b.includes(id) ? b.filter((x) => x !== id) : [...b, id] }); },
   toggleBookmark: (id) => { const b = get().bookmarks; set({ bookmarks: b.includes(id) ? b.filter((x) => x !== id) : [...b, id] }); },
   setNote: (id, text) => set({ notes: { ...get().notes, [id]: text } }),
   addStudyTime: (ms) => set({ studyMs: get().studyMs + ms }),

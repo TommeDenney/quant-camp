@@ -15,6 +15,7 @@ const NAV: { to: string; label: string; icon: IconName; mobile?: boolean }[] = [
   { to: '/practice', label: 'Practice', icon: 'practice', mobile: true },
   { to: '/mock', label: 'Mock exam', icon: 'mock', mobile: true },
   { to: '/reference', label: 'Reference', icon: 'reference', mobile: true },
+  { to: '/findit', label: 'Find it in your notes', icon: 'target' },
   { to: '/labs', label: 'Simulators', icon: 'labs' },
   { to: '/python', label: 'Python Lab', icon: 'python' },
   { to: '/glossary', label: 'Glossary', icon: 'glossary' },

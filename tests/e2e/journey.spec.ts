@@ -34,7 +34,8 @@ test('a lesson walks through its steps, checks understanding and saves progress'
   await shot(page, 'lesson-step1');
   // Walk forward until the quick check appears.
   for (let i = 0; i < 12; i++) {
-    if (await page.getByRole('button', { name: 'Check answer' }).first().isVisible().catch(() => false)) break;
+    // Wait for the step transition to settle before deciding whether to move on.
+    if (await page.getByRole('button', { name: 'Check answer' }).first().waitFor({ timeout: 700 }).then(() => true, () => false)) break;
     await page.getByRole('button', { name: /^Next/ }).last().click();
   }
   const check = page.getByRole('button', { name: 'Check answer' }).first();

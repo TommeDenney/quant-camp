@@ -6,16 +6,27 @@ import { Empty, PageHeader } from '../components/Layout';
 import { LESSONS, MODULES, QUESTIONS } from '../data';
 import { levelOf } from '../lib/mastery';
 import { masteryOf, objectivesOfModule } from '../lib/summary';
-import { useProgress } from '../store/progress';
+import { isSprint, tierOf, TIER_HINT, TIER_LABEL } from '../lib/plan';
+import { hoursLeft, useProgress } from '../store/progress';
 
 const DAY = { mon: 'Monday · foundations and inference', tue: 'Tuesday · time series and modelling', wed: 'Wednesday · final practice' };
 
 export default function Learn() {
-  const { lessons: prog, objectives, bookmarks, toggleBookmark } = useProgress();
+  const { lessons: prog, objectives, bookmarks, toggleBookmark, setup } = useProgress();
+  const sprint = isSprint(hoursLeft(setup));
   if (!LESSONS.length && !MODULES.length) return <><PageHeader title="Learn" /><Empty title="No lessons yet">The lessons are being prepared.</Empty></>;
   return (
     <div className="grid gap-8">
       <PageHeader eyebrow="Learn" title="Modules & lessons">Each lesson has ten short steps: why it matters, the prerequisite, a plain explanation, a visual, a worked example, something to try, a quick check, common mistakes, the takeaway and a recall plan.</PageHeader>
+      {sprint && (
+        <div className="card card-pad grid gap-2" style={{ background: 'var(--accent-soft)' }}>
+          <b>Sprint mode: the exam is close, so each module is tagged with how to study it.</b>
+          <ul className="grid gap-1 text-sm">
+            {(['testout', 'core', 'skim'] as const).map((t) => <li key={t}><span className="chip mr-2">{TIER_LABEL[t]}</span>{TIER_HINT[t]}</li>)}
+          </ul>
+          <p className="text-sm">Also do the <a href="#/python" className="underline font-semibold">Python Lab and Colab guide</a> today.</p>
+        </div>
+      )}
       {(['mon', 'tue', 'wed'] as const).map((day) => {
         const mods = MODULES.filter((m) => m.day === day);
         if (!mods.length) return null;
@@ -30,7 +41,7 @@ export default function Learn() {
                 return (
                   <article key={m.id} id={`m${m.id}`} className="card card-pad grid gap-3 content-start">
                     <header className="grid gap-1">
-                      <div className="flex items-baseline justify-between gap-2"><h3 className="font-bold"><span className="text-muted">{m.id}.</span> {m.title}</h3><span className="text-xs text-muted whitespace-nowrap">{levelOf(score)}</span></div>
+                      <div className="flex items-baseline justify-between gap-2"><h3 className="font-bold"><span className="text-muted">{m.id}.</span> {m.title}</h3><span className="flex items-center gap-2 text-xs text-muted whitespace-nowrap">{sprint && <span className="chip" title={TIER_HINT[tierOf(m.id)]}>{TIER_LABEL[tierOf(m.id)]}</span>}{levelOf(score)}</span></div>
                       <p className="text-sm text-muted">{m.blurb}</p>
                       <Bar value={score} />
                     </header>
