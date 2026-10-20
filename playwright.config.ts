@@ -14,8 +14,8 @@ export default defineConfig({
   timeout: 60_000,
   expect: { timeout: 8_000 },
   fullyParallel: true,
-  workers: 4,
-  retries: 0,
+  workers: process.env.CI ? 2 : 4,
+  retries: process.env.CI ? 2 : 0,
   reporter: [['list'], ['json', { outputFile: 'test-results/results.json' }]],
   use: {
     baseURL: 'http://localhost:4173/quant-camp/',

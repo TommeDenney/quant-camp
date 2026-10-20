@@ -1,7 +1,7 @@
 // Quant Camp service worker: works offline after the first visit.
 // Navigation: network first (fresh content), falling back to the cached app shell.
 // Hashed build assets (/assets/*): cache first. Everything else same-origin: stale-while-revalidate.
-const VERSION = 'qc-v1';
+const VERSION = 'qc-v2';
 const BASE = new URL('./', self.location).pathname; // e.g. /quant-camp/
 
 self.addEventListener('install', (event) => {
@@ -45,7 +45,7 @@ self.addEventListener('fetch', (event) => {
         cache.put(new URL('index.html', self.location).href, res.clone());
         return res;
       } catch {
-        return (await caches.match(new URL('index.html', self.location).href)) || (await caches.match(new URL('./', self.location).href)) || Response.error();
+        return (await caches.match(new URL('index.html', self.location).href, { ignoreVary: true })) || (await caches.match(new URL('./', self.location).href, { ignoreVary: true })) || Response.error();
       }
     })());
     return;
@@ -53,7 +53,7 @@ self.addEventListener('fetch', (event) => {
 
   if (url.pathname.startsWith(`${BASE}assets/`)) {
     event.respondWith((async () => {
-      const hit = await caches.match(req);
+      const hit = await caches.match(req, { ignoreVary: true });
       if (hit) return hit;
       const res = await fetch(req);
       if (res.ok) (await caches.open(VERSION)).put(req, res.clone());
@@ -64,7 +64,7 @@ self.addEventListener('fetch', (event) => {
 
   event.respondWith((async () => {
     const cache = await caches.open(VERSION);
-    const hit = await cache.match(req);
+    const hit = await cache.match(req, { ignoreVary: true });
     const net = fetch(req).then((res) => { if (res.ok) cache.put(req, res.clone()); return res; }).catch(() => hit || Response.error());
     return hit || net;
   })());
